@@ -1,0 +1,750 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"text",
+				"text-danger"
+			],
+			[
+				"datas",
+				"dataSourceTOTALES\tproperty"
+			],
+			[
+				"signa",
+				"signal1\tproperty"
+			],
+			[
+				"con",
+				"console\tvar"
+			],
+			[
+				"si",
+				"signal2\tproperty"
+			],
+			[
+				"to",
+				"toString\tmethod"
+			],
+			[
+				"bg",
+				"bg-light"
+			],
+			[
+				"inde",
+				"indexOf\tmethod"
+			],
+			[
+				"pos",
+				"posx\tproperty"
+			],
+			[
+				"p",
+				"posx\tproperty"
+			],
+			[
+				"off",
+				"offsetTop\tproperty"
+			],
+			[
+				"ca",
+				"canvasEl\tproperty"
+			],
+			[
+				"delta",
+				"deltaY\tlet"
+			],
+			[
+				"str",
+				"strokeStyle\tproperty"
+			],
+			[
+				"fill",
+				"fillText\tmethod"
+			],
+			[
+				"li",
+				"limYd\tparameter"
+			],
+			[
+				"lim",
+				"limYu\tparameter"
+			],
+			[
+				"h",
+				"horaLastReg\tproperty"
+			],
+			[
+				"cno",
+				"console\tvar"
+			],
+			[
+				"setI",
+				"setInterval\tfunction"
+			],
+			[
+				"re",
+				"reverse\tmethod"
+			],
+			[
+				"for",
+				"forRoot\tmethod"
+			],
+			[
+				"_",
+				"_psicologiaService\tproperty"
+			],
+			[
+				"fichas",
+				"fichasPsicologia\tproperty"
+			],
+			[
+				"b",
+				"buscaPorMail\tmethod"
+			],
+			[
+				"total",
+				"totalDomingo\tproperty"
+			],
+			[
+				"di",
+				"seisDiasAntes\tproperty"
+			],
+			[
+				"get",
+				"getDay\tmethod"
+			],
+			[
+				"car",
+				"cargando\tproperty"
+			],
+			[
+				"tot",
+				"totalterapeutaDataAno\tproperty"
+			],
+			[
+				"ter",
+				"terapeutaDataAno\tproperty"
+			],
+			[
+				"psi",
+				"psicologiaDataAno\tproperty"
+			],
+			[
+				"kin",
+				"kinesiologiaDataAno\tproperty"
+			],
+			[
+				"dta",
+				"generalDataAno\tproperty"
+			],
+			[
+				"gener",
+				"generalDataTotal\tproperty"
+			],
+			[
+				"cons",
+				"consultaPsicologiaAno\tmethod"
+			],
+			[
+				"consu",
+				"consultaKinesiologiaAno\tmethod"
+			],
+			[
+				"gen",
+				"generalDataAno\tproperty"
+			],
+			[
+				"tera",
+				"terapeutaDataTotal\tproperty"
+			],
+			[
+				"kine",
+				"kinesiologiaDataTotal\tproperty"
+			],
+			[
+				"gene",
+				"generalDataTotal\tproperty"
+			],
+			[
+				"tol",
+				"totalterapeutaDataAno\tproperty"
+			],
+			[
+				"tota",
+				"totalKinesiologiaDataAno\tproperty"
+			],
+			[
+				"s",
+				"subscribe\tmethod"
+			],
+			[
+				"is",
+				"isNaN\tfunction"
+			],
+			[
+				"fi",
+				"buscaFichaAnamnesis\tmethod"
+			],
+			[
+				"parse",
+				"parseInt\tfunction"
+			],
+			[
+				"so",
+				"sort\tmethod"
+			],
+			[
+				"pa",
+				"pacienteDataReserva\tinterface"
+			],
+			[
+				"number",
+				"number\tkeyword"
+			],
+			[
+				"ar",
+				"archivoSubir2\tproperty"
+			],
+			[
+				"au",
+				"autorizacionTransporte\tproperty"
+			],
+			[
+				"NO",
+				"notificacionEditaCreaPaciente\tproperty"
+			],
+			[
+				"fceh",
+				"fechaUltimaConsultaTerapeuta\tproperty"
+			],
+			[
+				"fec",
+				"fechaUltimaConsultaPsicologia\tproperty"
+			],
+			[
+				"fe",
+				"fechaUltimaConsultaKinesiologia\tproperty"
+			],
+			[
+				"fecha",
+				"fechaUltimaConsultaGenaral\tproperty"
+			],
+			[
+				"set",
+				"setValue\tmethod"
+			],
+			[
+				"posfe",
+				"posFechaActualPsicologia\tproperty"
+			],
+			[
+				"d",
+				"disable\tmethod"
+			],
+			[
+				"reg",
+				"registrarTerapeuta\tmethod"
+			],
+			[
+				"inif",
+				"iniFormTerapeuta\tmethod"
+			],
+			[
+				"ini",
+				"iniFormGeneral\tmethod"
+			],
+			[
+				"new",
+				"newformTerapeuta\tproperty"
+			],
+			[
+				"busc",
+				"buscarFichaTerapeuta\tmethod"
+			],
+			[
+				"bus",
+				"buscarFichaKinesiologia\tmethod"
+			],
+			[
+				"_p",
+				"_psicologiaService\tproperty"
+			],
+			[
+				"newf",
+				"newformPsicologia\tproperty"
+			],
+			[
+				"posf",
+				"posFechaActualTerapeuta\tproperty"
+			],
+			[
+				"form",
+				"formTerapeuta\tproperty"
+			],
+			[
+				"fic",
+				"fichasPsicologia\tproperty"
+			],
+			[
+				"fich",
+				"fichasKinesiologia\tproperty"
+			],
+			[
+				"f",
+				"fichaGeneral\tproperty"
+			],
+			[
+				"po",
+				"posFechaActualKinesiologia\tproperty"
+			],
+			[
+				"numb",
+				"number\tkeyword"
+			],
+			[
+				"co",
+				"console\tvar"
+			],
+			[
+				"va",
+				"value\tproperty"
+			],
+			[
+				"bu",
+				"buscarFichaPsicologia\tmethod"
+			],
+			[
+				"in",
+				"iniFormGeneral\tmethod"
+			],
+			[
+				"fo",
+				"formFonoaudiologia\tproperty"
+			],
+			[
+				"ne",
+				"newformTerapeuta\tproperty"
+			],
+			[
+				"pr",
+				"prelinguisticas\tproperty"
+			],
+			[
+				"v",
+				"value\tproperty"
+			],
+			[
+				"getd",
+				"getDate\tmethod"
+			],
+			[
+				"a",
+				"antecedentesSalud\tproperty"
+			],
+			[
+				"na",
+				"name\tproperty"
+			],
+			[
+				"Parse",
+				"parseInt\tfunction"
+			],
+			[
+				"r",
+				"repiteDia\tproperty"
+			],
+			[
+				"date",
+				"dateHasta\tproperty"
+			],
+			[
+				"fro",
+				"fromDateS\tproperty"
+			],
+			[
+				"nu",
+				"number\tkeyword"
+			],
+			[
+				"hr",
+				"hrDia\tlet"
+			],
+			[
+				"no",
+				"notificacion\tproperty"
+			],
+			[
+				"o",
+				"ocultarModal\tmethod"
+			],
+			[
+				"J",
+				"JSON\tconst"
+			],
+			[
+				"pro",
+				"profesion"
+			],
+			[
+				"im",
+				"imagenTemp\tproperty"
+			],
+			[
+				"usuario",
+				"usuarioDB\tlet"
+			],
+			[
+				"sw",
+				"swal\tconst"
+			],
+			[
+				"gar",
+				"graficos\tproperty"
+			],
+			[
+				"t",
+				"true"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "package.json",
+			"settings":
+			{
+				"buffer_size": 275,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 136.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Volumes/DATOS/www/desimatCloudBack"
+	],
+	"file_history":
+	[
+		"/Volumes/DATOS/www/desimatCloudFront/src/assets/styles/responsive.scss",
+		"/Volumes/DATOS/www/aplikCloudFront/package.json",
+		"/Volumes/DATOS/www/aplikCloudFront/angular.json",
+		"/Volumes/DATOS/www/aplikCloudFront/node_modules/dygraphs/dist/dygraph.min.js",
+		"/Volumes/DATOS/www/aplikCloudFront/src/app/dashboards/dashboards.module.ts",
+		"/Volumes/DATOS/www/aplikCloudFront/package-lock.json",
+		"/Volumes/DATOS/www/aplikCloudFront/src/app/app.module.ts",
+		"/Volumes/DATOS/www/material-angular7/main/src/app/datatables/table-filter/table-filter.component.ts",
+		"/Volumes/DATOS/www/material-angular7/main/src/app/datatables/data-table/data-table.component.html",
+		"/Volumes/DATOS/www/material-angular7/main/src/app/tables/filterable/filterable.component.html",
+		"/Volumes/DATOS/www/material-angular7/main/src/app/tables/filterable/filterable.component.ts",
+		"/Volumes/DATOS/www/material-angular7/main/src/app/tables/smart-table/smart-table.component.ts",
+		"/Volumes/DATOS/www/desimatCloudFront/src/app/dashboards/dashboard2/dashboard2.component.scss",
+		"/Volumes/DATOS/www/desimatCloudFront/src/app/services/service.module.ts",
+		"/Volumes/DATOS/www/desimatCloudFront/src/app/services/service.index.ts",
+		"/Volumes/DATOS/www/desimatCloudFront/src/app/services/exportar/excel.service.ts",
+		"/Volumes/DATOS/www/desimatCloudFront/package.json",
+		"/Volumes/DATOS/www/aplikCloudFront/node_modules/chartjs-plugin-zoom/src/chart.zoom.js",
+		"/Volumes/DATOS/www/aplikCloudFront/src/app/authentication/register/register.component.html",
+		"/Volumes/DATOS/www/aplikCloudFront/src/app/authentication/login/login.component.html",
+		"/Volumes/DATOS/www/aplikCloudFront/src/app/dashboards/dashboard1/dialog-dash1.html",
+		"/Volumes/DATOS/www/aplikCloudFront/src/assets/images/icon16.png",
+		"/Volumes/DATOS/www/aplikCloudFront/src/app/layouts/full/sidebar/sidebar.component.html",
+		"/Volumes/DATOS/www/aplikCloudFront/src/polyfills.ts",
+		"/Volumes/DATOS/www/aplikCloudFront/src/main.ts",
+		"/Volumes/DATOS/www/desimatCloudFront/src/app/services/usuario/usuario.service.ts",
+		"/Volumes/DATOS/www/centropiecmds/adminpie-master/src/app/services/usuario/usuario.service.ts",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/Respaldo/areal3/application/config/autoload.php",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/application/index.html",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/application/views/index.html",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/application/views/templates/index.php",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/application/views/templates/header.php",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/system/index.html",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/system/.htaccess",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/application/controllers/Pages.php",
+		"/Volumes/DATOS/DOCUMENTOS/AREAL/AREAL EXCECUTIVE/areal3/index.php",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/control/control.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/control/control.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/ilumina/ilumina.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/styles.css",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/ilumina/ilumina.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/motor/motor.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/motor/motor.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/dashboard/dashboard.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/dashboard/dashboard.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/modal-control/modal-control.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/modal-control/modal-control.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/app.module.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/services/services.module.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/pages.module.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/app.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/app.routes.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/pages.routing.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/shared/sidebar/sidebar.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/profile/profile.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/map/map.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/services/subsignal.service.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/map/map.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/index.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/shared/breadcrumbs/breadcrumbs.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/shared/header/header.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/assets/js/dashboard1.js",
+		"/Volumes/DATOS/www/mqttFront/src/app/models/subsignal.model.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/services/shared.service.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/config/config.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/models/subsignal.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/shared/breadcrumbs/breadcrumbs.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/blank/blank.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/error/error.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/pages-error-404.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/pages-profile.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/map-google.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/icon/icon.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/pages/table/table.component.html",
+		"/Volumes/DATOS/www/mqttFront/src/app/shared/sidebar/sidebar.component.ts",
+		"/Volumes/DATOS/www/mqttFront/src/assets/node_modules/popper/popper.min.js",
+		"/Volumes/DATOS/www/elegant-admin-lite/assets/package.json",
+		"/Volumes/DATOS/www/mqtt/models/subsignal.js",
+		"/Volumes/DATOS/www/mqtt/app.js",
+		"/Volumes/DATOS/www/mqtt/subsignal2.js",
+		"/Volumes/DATOS/www/mqtt/node_modules/subsignal1.js",
+		"/Volumes/DATOS/www/CEAPRO/css/creative.css",
+		"/Users/rvaras/Downloads/servicio2.png",
+		"/Volumes/DATOS/www/CEAPRO/js/creative.js",
+		"/Volumes/DATOS/www/adminpie-master/src/app/starter/starter.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/fichas/general.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/models/general.model.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/models/fonoaudiologia.model.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/fichas/fonoaudiologia.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/fichas/kinesiologia.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/fichas/psicologia.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/fichas/terapeuta.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/models/kinesiologia.model.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/models/psicologia.model.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/models/terapeuta.model.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/profesionales/profesionales.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/component/modal-edit-profesional/modal-edit-profesional.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/component/modal-edit-profesional/modal-edit-profesional.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/fichas/fichas.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/models/profesional.model.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/starter/starter.component.html",
+		"/Volumes/DATOS/www/backend-server/index.js",
+		"/Volumes/DATOS/www/backend-server/routes/anamnesis.js",
+		"/Volumes/DATOS/www/backend-server/controllers/anamnesis.js",
+		"/Volumes/DATOS/www/adminpie-master/src/app/layouts/full/full.component.html",
+		"/Users/rvaras/Desktop/adminpie/index.js",
+		"/Users/rvaras/Desktop/adminpie/package.json",
+		"/Users/rvaras/Desktop/adminpie/package-lock.json",
+		"/Users/rvaras/Desktop/adminpie/controllers/user.js",
+		"/Volumes/DATOS/www/adminpie-master/src/app/shared/header-navigation/navigation.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/shared/sidebar/sidebar.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/crearusuarios/crearusuarios.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/authentication/login/login.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/authentication/login/login.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/usuario/usuario.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/subir-archivo/subir-archivo.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/profile/profile.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/profile/profile.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/crearusuarios/crearusuarios.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/component/modal-upload/modal-upload.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/authentication/signup/signup.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/fichas/fichas.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/authentication/signup/signup.component.html",
+		"/Volumes/DATOS/www/adminpie-master/src/app/component/modal-reserva/modal-reserva.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/component/modal-crea-paciente/modal-crea-paciente.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/services/paciente/paciente.service.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/pacientes/pacientes.component.ts",
+		"/Volumes/DATOS/www/adminpie-master/src/app/pages/pacientes/pacientes.component.html"
+	],
+	"find":
+	{
+		"height": 30.0
+	},
+	"find_in_files":
+	{
+		"height": 110.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "package.json",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 30.0
+	},
+	"input":
+	{
+		"height": 42.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.doc":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 132.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "desimatCloudBack.sublime-project",
+	"replace":
+	{
+		"height": 56.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 304.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
