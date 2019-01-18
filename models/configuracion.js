@@ -5,7 +5,19 @@ var Schema = mongoose.Schema;
 
 //OJO CAMBIAR NOMBRE DE SCHEMA SEGUN ARCHIVO
 var ConfiguracionSchema = new Schema({
-	image: { type: String, required: false }
+	image: { type: String, required: false },
+	titulocontrol:{ type: String, required: false },
+	tituloplanta:{ type: String, required: false },
+	titulosalidas:{ type: String, required: false },
+	tituloDO1:{ type: String, required: false },
+	tituloAO1:{ type: String, required: false },
+	tituloAO2:{ type: String, required: false },
+	tituloAO3:{ type: String, required: false },
+	subtitulosalidas:{ type: String, required: false },
+	subtituloDO1:{ type: String, required: false },
+	subtituloAO1:{ type: String, required: false },
+	subtituloAO2:{ type: String, required: false },
+	subtituloAO3:{ type: String, required: false },
 },{ collection: 'configuracion'});
 
 //OJO CAMBIAR NOMBRE DE SCHEMA SEGUN ARCHIVO

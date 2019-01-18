@@ -29,7 +29,32 @@ function registraItem(req,res){
 		}
 	});
 }
-
+//================================================
+// ACTUALIZAR UN ITEM
+//================================================
+function actualizaItem(req,res){
+	var itemId = req.params.id; 
+	var params = req.body;      
+ 	//OJO CAMBIAR NOMBRE DE COLLECCION SEGÚN LA CONSULTA
+	Configuracion.findByIdAndUpdate(itemId, params, { new: true }, (err, itemUpdated) => { 
+		if(err){
+			res.status(500).send({
+				error: err,
+				message: 'Error al actualizar item'
+			});
+		}else{
+			if(!itemUpdated){
+				res.status(404).send({
+					message: 'Imposible actualizar item',
+			    });
+			}else{
+				res.status(200).send({
+					item: itemUpdated,
+				});
+			}
+		}
+	});
+}
 //================================================
 // ENCUENTRA EL ULTIMO
 //================================================
@@ -110,6 +135,7 @@ function getImageFile(req,res){
 }
 module.exports = {
 	registraItem,
+	actualizaItem,
 	itemUltimo,
 	uploadImage,
 	getImageFile

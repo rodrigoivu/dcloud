@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var DigitaloutputSchema = new Schema({
 
 	name: { type: String, required: false},
-	valor: { type: Number, required: false}
+	valor: { type: Number, required: false},
+	header: { type: String, required: false}, //nombre encabezado para envio por JSON
 
 },{ collection: 'digitaloutput'});
 
