@@ -48,14 +48,15 @@ if (err) {
 	});
 
 	const io = socket.listen(server);
-	SubscriberController.asignarSocket(io);
+	//SubscriberController.asignarSocket(io);
 	io.sockets.on('connection', (socket) => { 
-		// socket.on('message', (data) => {
-		// 	socket.emit('new message', {user: 'Servidor', message: 'Hola Cliente'});
+		SubscriberController.asignarSocket(socket);
+		// socket.on('evento', (data) => {
+		//    socket.emit('mensajeEvento', {user: 'Servidor', message: 'Hola Cliente'});
   //          console.log(data);
   //       });
           
-          PublisherController.recibeOrden(socket);
+        PublisherController.recibeOrden(socket);
 
 	});
 }

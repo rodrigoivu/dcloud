@@ -1,6 +1,5 @@
 'use strict'
 
-var Subscriber = require('../models/subscriber');
 var Mensaje = require('../models/mensaje');
 var Persona = require('../models/persona');
 var Tagobjeto = require('../models/tagobjeto');
@@ -8,6 +7,7 @@ var Nuevotag = require('../models/nuevotag');
 var Analoginput = require('../models/analoginput');
 var Digitalinput = require('../models/digitalinput');
 var Eventoentrada = require('../models/eventoentrada');
+var Elementocanvas = require('../models/elementocanvas');
 
 var socketLocal; // se rescata del index.js
 var ioLocal; // se rescata del index.js
@@ -147,14 +147,17 @@ function guardaEventoentrada(sensor,descripcion,evento,valor){
 				if(!itemStored){
 					console.log("No guardó Eventoentrada");
 				}else{
-					console.log("Guardó evento:"+sensor);
+					//console.log("Guardó evento:"+sensor);
+					mensajeEvento(sensor,evento);
 				}
 			}
 		});
 	
 }
+
 function guardaAI(){
     var date= new Date;
+    var elementosCanvas=[];
 	var analoginput = new Analoginput({
 			timestamp: date,
 			ai1: arrayGuardaAI[0],
@@ -166,6 +169,23 @@ function guardaAI(){
 			ai7: arrayGuardaAI[6],
 			ai8: arrayGuardaAI[7]
 		});
+	
+	Elementocanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						elementosCanvas=itemsFound;
+						detectaEventoAI(analoginput.timestamp,elementosCanvas);
+					}
+	   			}
+	   		}
+	   	);
+
+
 	analoginput.save((err, itemStored) => {
 
 		if(err){
@@ -178,6 +198,40 @@ function guardaAI(){
 			}
 		}
 	});
+}
+
+function detectaEventoAI(timestamp, elementosAI){
+	var min;
+	var max;
+	var limite;
+	var indicaalarma;
+	var datoentrada;
+	var datoentradaescalado;
+	var m;
+    var c;
+    
+	for (var i = 0; i < elementosAI.length; i++) {
+		min=elementosAI[i].min;
+		max=elementosAI[i].max;
+		limite=elementosAI[i].limite;
+		indicaalarma=elementosAI[i].indicaalarma;
+		datoentrada=arrayGuardaAI[i]
+		//Calculo datoentradaescalado
+	    if(max > min){
+	       m=(max-min)/999;
+	       c=max-m*999;
+	       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+	    }
+	    console.log('limite: '+limite);
+	    console.log('dato: '+ datoentradaescalado);
+	    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+        	// console.log('esta normal');
+	    }else{
+	    	var ai_indice=i+1;
+	        guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
+	    }
+	}
+	
 }
 
 function buscaTagPersona(tag){
@@ -240,150 +294,30 @@ function registraNuevoTag(tag){
 				console.log("No guardó tag");
 				msjTag='';
 			}else{
-				msjTag= "nuevo tag"
-				console.log(msjTag);
+				//msjTag= "nuevo tag"
+				//console.log(msjTag);
 				//avisoEntradasPLC(topicoLocal,msjTag,msjDI);
 			}
 		}
 	});
 }
 
-
 function manejoTopicoItem2( message, topico ){
 	console.log(topico + ": "+ message) 
 }
- //================================================
-// GUARDAR SUBSIGNAL
-//================================================
 
-function saveSubsignal(nombre,valor){
-	var f = new Date();
-	// var nombre = 'nombre';
-	// var valor = 'valor';
-	 var fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
-	 var hora = f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();
-
-	var subscriber = new Subscriber({
-		nombre: nombre,
-		valor: valor,
-		fecha: fecha,
-		hora: hora
-	});
-					
-					
-
-	//Guardar subsignal
-	subscriber.save((err, subscriberStored) => {
-		if(err){
-			res.status(500).send({
-				error: err,
-				message: 'Error al guardar subscriber'
-			});
-		}else{
-			if(!subscriberStored){
-				console.log('No se ha registrado el subscriber');
-				
-			}else{
-				
-			}
-		}
-	});
-	
+function asignarSocket(socket){
+    socketLocal=socket;
 }
 
-//================================================
-// MOSTRAR 10 DATOS DE SIGNAL
-//================================================
-function listSignals(req,res){
-
-   
-	Subscriber.find()
-	   .sort({ $natural: -1 })  //los 10 ultimos
-	   .limit(10)	
-	   .exec(
-	   		(err, signals) => {
-	   			if (err){
-	   				res.status(500).send({message: 'Error cargando signals'});
-	   			}else{
-	   				Subscriber.count({}, (err,conteo) =>{
-	   					res.status(200).send({
-								signals: signals,
-								total: conteo
-						});
-	   				});
-	   				
-	   			}
-	   		}
-	   	);
-}
-
-//================================================
-// MOSTRAR Todos DATOS DE SIGNAL
-//================================================
-function listSignalsAll(req,res){
-
-	var desde = req.query.desde || 0;
-	desde= Number(desde);
-   
-	Subscriber.find()
-	   .sort({ $natural: -1 })
-	   .skip(desde)
-	   .limit(10)	
-	   .exec(
-	   		(err, signals) => {
-	   			if (err){
-	   				res.status(500).send({message: 'Error cargando signals'});
-	   			}else{
-	   				Subscriber.count({}, (err,conteo) =>{
-	   					res.status(200).send({
-								signals: signals,
-								total: conteo
-						});
-	   				});
-	   				
-	   			}
-	   		}
-	   	);
-}
-
-function asignarSocket(io){
-    //ioLocal=io;
-    io.sockets.on('connection', (socket_io) => { 
-		socketLocal=socket_io;
-
-	});
-	
-
-}
-
-function avisoEntradasPLC(topico,mensajeTag,mensajeDI){
+function mensajeEvento(sensor,evento){
 	if(socketLocal){
-		console.log('Envia alarma');
-		socketLocal.emit('Entradas PLC', {topic: topico, tag: mensajeTag, di:mensajeDI});
+		socketLocal.emit('evento', {sensor: sensor, evento: evento});
 	}
-	// ioLocal.sockets.on('connection', (socket_io) => { 
-	// 	console.log('Envia alarma');
-	// 	socket_io.emit('Entradas PLC', {topic: topico, tag: mensajeTag, di:mensajeDI});
-
-	// });
 }
-
-// var quitSpacesOfAstring = function(str) {
-//     var cadena = '';
-//     var arrayString = str.split(' ');
-//     for (var i = 0; i < arrayString.length; i++) {
-//         if (arrayString[i] != "") {
-//             cadena += arrayString[i];
-//         }
-//     }
-//     return cadena;
-// };
-
 module.exports = {
 	filtraMensaje,
-	saveSubsignal,
-	listSignals,
-	listSignalsAll,
-	asignarSocket
+	asignarSocket,
+	mensajeEvento
 	
 };
