@@ -8,6 +8,8 @@ var Analoginput = require('../models/analoginput');
 var Digitalinput = require('../models/digitalinput');
 var Eventoentrada = require('../models/eventoentrada');
 var Elementocanvas = require('../models/elementocanvas');
+var Digitaloutput = require('../models/digitaloutput');
+var Analogoutput = require('../models/analogoutput');
 
 var socketLocal; // se rescata del index.js
 var ioLocal; // se rescata del index.js
@@ -17,6 +19,10 @@ var msjTag='';
 var msjDI='';
 var arrayGuardaDI=[];
 var arrayGuardaAI=[];
+var arrayGuardaDO=[];
+var arrayGuardaAO1=[];
+var arrayGuardaAO2=[];
+var arrayGuardaAO3=[];
 var topicoLocal='';
 
 
@@ -72,10 +78,55 @@ function manejoTopicoItem1( message, topico ){
 	    arrayGuardaAI=[ai1,ai2,ai3,ai4,ai5,ai6,ai7,ai8];
 	    guardaAI();
     }
+    if(mensaje.DO==1){
+    	var do1 = mensaje.p1;
+	    var do2 = mensaje.p2;
+	    var do3 = mensaje.p3;
+	    var do4 = mensaje.p4;
+	    var do5 = mensaje.p5;
+	    var do6 = mensaje.p6;
+	    var do7 = mensaje.p7;
+	    var do8 = mensaje.p8;
+	    arrayGuardaDO=[do1,do2,do3,do4,do5,do6,do7,do8];
+	    guardaDO();
+    }
+    if(mensaje.AO==1){
+    	var ao1 = mensaje.p1;
+	    var ao2 = mensaje.p2;
+	    var ao3 = mensaje.p3;
+	    var ao4 = mensaje.p4;
+	    var ao5 = mensaje.p5;
+	    var ao6 = mensaje.p6;
+	    var ao7 = mensaje.p7;
+	    var ao8 = mensaje.p8;
+	    arrayGuardaAO1=[ao1,ao2,ao3,ao4,ao5,ao6,ao7,ao8];
+	    guardaAO1();
+    }
+    if(mensaje.AO==2){
+    	var ao1 = mensaje.p1;
+	    var ao2 = mensaje.p2;
+	    var ao3 = mensaje.p3;
+	    var ao4 = mensaje.p4;
+	    var ao5 = mensaje.p5;
+	    var ao6 = mensaje.p6;
+	    var ao7 = mensaje.p7;
+	    var ao8 = mensaje.p8;
+	    arrayGuardaAO2=[ao1,ao2,ao3,ao4,ao5,ao6,ao7,ao8];
+	    guardaAO2();
+    }
+    if(mensaje.AO==3){
+    	var ao1 = mensaje.p1;
+	    var ao2 = mensaje.p2;
+	    var ao3 = mensaje.p3;
+	    var ao4 = mensaje.p4;
+	    var ao5 = mensaje.p5;
+	    var ao6 = mensaje.p6;
+	    var ao7 = mensaje.p7;
+	    var ao8 = mensaje.p8;
+	    arrayGuardaAO3=[ao1,ao2,ao3,ao4,ao5,ao6,ao7,ao8];
+	    guardaAO3();
+    }
 
-	
-
-       
    // if(tag!='null'){
    // 	  buscaTagPersona(tag);
    // }else{
@@ -84,9 +135,6 @@ function manejoTopicoItem1( message, topico ){
    
    // arrayGuardaDI=[di1,di2,di3,di4,di5,di6,di7,di8];
    // arrayGuardaAI=[ai1,ai2,ai3,ai4,ai5,ai6,ai7,ai8];
-   
-  
-
     
 }
 function guardaDI(){
@@ -232,6 +280,118 @@ function detectaEventoAI(timestamp, elementosAI){
 	    }
 	}
 	
+}
+//RESPUESTA DE SALIDAS ANALOGAS y digitales
+function guardaDO(){
+	var items=[];
+	//traer todos los item
+	Digitaloutput.find({}) 
+	   .exec(
+	   		(err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+	   				items=itemsFound;
+	   				for (var i = 0; i < items.length; i++) {
+				    	console.log(items[i]);
+				    	var params={valor: arrayGuardaDO[i] }
+				    	Digitaloutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
+							if(err){ console.log("err: "+ err);	}
+						});
+				    }
+	   			}
+	   		}
+	   	);
+}
+function guardaAO1(){
+	var items=[];
+	//traer todos los item
+	Analogoutput.find({}) 
+	   .exec(
+	   		(err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+	   				items=itemsFound;
+	   				var cantAO=items.length;
+				    var endFor;
+				    if(cantAO < 8){
+				      endFor=cantAO;
+				    }else{
+				      endFor=8;
+				    }
+				    if(cantAO > 0){
+				      for (var i = 0; i < endFor; ++i) {
+				      	var params={valor: arrayGuardaAO1[i] }
+				    	Analogoutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
+							if(err){ console.log("err: "+ err);	}
+						});
+				      }
+				    }
+	   				
+	   			}
+	   		}
+	   	);
+}
+function guardaAO2(){
+	var items=[];
+	//traer todos los item
+	Analogoutput.find({}) 
+	   .exec(
+	   		(err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+	   				items=itemsFound;
+	   				var cantAO=items.length;
+				    var endFor;
+				    if(cantAO > 8 && cantAO < 16){
+				      endFor=cantAO;
+				    }
+				    if(cantAO >=16 ){
+				      endFor=16;
+				    }
+				    if(cantAO > 8){
+				      for (var i = 8; i < endFor; ++i) {
+				      	var params={valor: arrayGuardaAO2[i-8] }
+				    	Analogoutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
+							if(err){ console.log("err: "+ err);	}
+						});
+				      }
+				    }
+	   			}
+	   		}
+	   	);
+}
+function guardaAO3(){
+	var items=[];
+	//traer todos los item
+	Analogoutput.find({}) 
+	   .exec(
+	   		(err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+	   				items=itemsFound;
+	   				var cantAO=items.length;
+				    var endFor;
+				    if(cantAO > 16 && cantAO < 24){
+				      endFor=cantAO;
+				    }
+				    if(cantAO >=24 ){
+				      endFor=24;
+				    }
+				    if(cantAO > 16){
+				      for (var i = 16; i < endFor; ++i) {
+				      	var params={valor: arrayGuardaAO3[i-16] }
+				    	Analogoutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
+							if(err){ console.log("err: "+ err);	}
+						});
+				      }
+				    }
+	   			}
+	   		}
+	   	);
 }
 
 function buscaTagPersona(tag){
