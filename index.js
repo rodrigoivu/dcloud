@@ -3,14 +3,12 @@
  var https = require('https');
  var fs = require('fs');
 
-//Certificados para https;
-// var credentials = {
-// 	ca: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/ca.pem"), //la certification authority o CA
-// 	key: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/key.pem"), //la clave SSL, que es el primer archivo que generamos ;)
-// 	cert: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/fullchain.pem") //el certificado
-// 	//cert: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/fullchain.pem", 'utf8')
-// };
-
+var credentials = {
+	//ca: fs.readFileSync("/etc/letsencrypt/live/centropiecmds.cl/ca.pem"), //la certification authority o CA
+	key: fs.readFileSync("/etc/letsencrypt/live/d-cloud.desimat.cl/privkey.pem"), //la clave SSL, que es el primer archivo que generamos ;)
+	cert: fs.readFileSync("/etc/letsencrypt/live/d-cloud.desimat.cl/fullchain.pem") //el certificado
+	// //cert: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/fullchain.pem", 'utf8')
+};
 
 //app: archivo contiene funcionalidades de Express,para el armado de la infraestructura de la API
 var app = require('./app');
@@ -39,25 +37,25 @@ if (err) {
 	console.log("La conexión a la base de datos está funcionando correctamente...");
   
     //Conectar el Servidor de Api's mediante https  
-    //    https.createServer(credentials, app).listen(port, function(){
-    //    console.log("Servidor de adminpie escuchando en http://localhost:" + port);
-	// });
+       https.createServer(credentials, app).listen(port, function(){
+       console.log("Servidor de adminpie escuchando en http://localhost:" + port);
+	});
 	//Conectar el Servidor de Api's mediante http
 	const server = app.listen(port, function(){
     console.log("Servidor de Api's de desimat cloud escuchando en http://localhost:" + port);
 	});
 
-	const io = socket.listen(server);
-	//SubscriberController.asignarSocket(io);
-	io.sockets.on('connection', (socket) => { 
-		SubscriberController.asignarSocket(socket);
-		// socket.on('evento', (data) => {
-		//    socket.emit('mensajeEvento', {user: 'Servidor', message: 'Hola Cliente'});
-  //          console.log(data);
-  //       });
+	// const io = socket.listen(server);
+	// //SubscriberController.asignarSocket(io);
+	// io.sockets.on('connection', (socket) => { 
+	// 	SubscriberController.asignarSocket(socket);
+	// 	// socket.on('evento', (data) => {
+	// 	//    socket.emit('mensajeEvento', {user: 'Servidor', message: 'Hola Cliente'});
+ //  //          console.log(data);
+ //  //       });
           
-        PublisherController.recibeOrden(socket);
+ //        PublisherController.recibeOrden(socket);
 
-	});
+	// });
 }
 });
