@@ -1,7 +1,7 @@
 'use strict'
 //Usar las siguientes directivas para https
-// var https = require('https');
-// var fs = require('fs');
+ var https = require('https');
+ var fs = require('fs');
 
 //Certificados para https;
 // var credentials = {
