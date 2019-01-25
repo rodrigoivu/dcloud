@@ -37,25 +37,25 @@ if (err) {
 	console.log("La conexión a la base de datos está funcionando correctamente...");
   
     //Conectar el Servidor de Api's mediante https  
-       https.createServer(credentials, app).listen(port, function(){
-       console.log("Servidor de adminpie escuchando en http://localhost:" + port);
-	});
+    //    https.createServer(credentials, app).listen(port, function(){
+    //    console.log("Servidor de adminpie escuchando en http://localhost:" + port);
+	// });
 	//Conectar el Servidor de Api's mediante http
 	const server = app.listen(port, function(){
     console.log("Servidor de Api's de desimat cloud escuchando en http://localhost:" + port);
 	});
 
-	// const io = socket.listen(server);
-	// //SubscriberController.asignarSocket(io);
-	// io.sockets.on('connection', (socket) => { 
-	// 	SubscriberController.asignarSocket(socket);
-	// 	// socket.on('evento', (data) => {
-	// 	//    socket.emit('mensajeEvento', {user: 'Servidor', message: 'Hola Cliente'});
- //  //          console.log(data);
- //  //       });
+	const io = socket.listen(server);
+	//SubscriberController.asignarSocket(io);
+	io.sockets.on('connection', (socket) => { 
+		SubscriberController.asignarSocket(socket);
+		// socket.on('evento', (data) => {
+		//    socket.emit('mensajeEvento', {user: 'Servidor', message: 'Hola Cliente'});
+  //          console.log(data);
+  //       });
           
- //        PublisherController.recibeOrden(socket);
+        PublisherController.recibeOrden(socket);
 
-	// });
+	});
 }
 });
