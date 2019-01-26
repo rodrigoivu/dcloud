@@ -9,6 +9,7 @@ webpush.setVapidDetails('mailto:rvaras@ceapro.cl', PUBLIC_VAPID, PRIVATE_VAPID);
 function pushSubscribir(req,res){
   const subscription = req.body;
   fakeDatabase.push(subscription);
+  res.sendStatus(200);
 } 
 
 function pushNotificar(req,res){
