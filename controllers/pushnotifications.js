@@ -28,6 +28,7 @@ function pushNotificar(req,res){
 
 function pushNotificarEvento(title,body){
 	var pathNoImage = path.resolve( __dirname, '../assets/no-img.jpg');
+	console.log(pathNoImage);
 	const notificationPayload = {
 	    notification: {
 	      title: title,

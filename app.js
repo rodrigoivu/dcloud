@@ -59,7 +59,7 @@ app.use('/api', analogoutput_routes);
 app.use('/api', digitaloutput_routes);
 app.use('/api', configuracion_routes);
 app.use('/api', elementocanvasdi_routes);
-app.use('/api', pushnotifications_routes);
+app.use('/push', pushnotifications_routes);
 
 app.get('*', function(req,res,next){
   res.sendFile(path.resolve('./client/index.html'));
