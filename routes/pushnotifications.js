@@ -5,7 +5,7 @@ var PushnotificationsController = require ('../controllers/pushnotifications');
 
 var api = express.Router();
 
-api.get('/subscription', PushnotificationsController.pushSubscribir);
+api.post('/subscription', PushnotificationsController.pushSubscribir);
 api.post('/sendNotification', PushnotificationsController.pushNotificar);
  
 
