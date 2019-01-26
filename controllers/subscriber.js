@@ -11,6 +11,8 @@ var Elementocanvas = require('../models/elementocanvas');
 var Digitaloutput = require('../models/digitaloutput');
 var Analogoutput = require('../models/analogoutput');
 
+var PushnotificationsController = require ('../controllers/pushnotifications');
+
 var socketLocal; // se rescata del index.js
 var ioLocal; // se rescata del index.js
 var estadoAnteriorDI=[0,0,0,0,0,0,0,0];
@@ -196,6 +198,7 @@ function guardaEventoentrada(sensor,descripcion,evento,valor){
 					console.log("No guardó Eventoentrada");
 				}else{
 					//console.log("Guardó evento:"+sensor);
+					notificar(date,sensor,evento,valor);
 					mensajeEvento(sensor,evento);
 				}
 			}
@@ -468,6 +471,11 @@ function manejoTopicoItem2( message, topico ){
 
 function asignarSocket(socket){
     socketLocal=socket;
+}
+function notificar(date,sensor,evento,valor){
+	var title = sensor+' '+evento;
+	var body = 'Valor: '+valor+', '+date
+	PushnotificationsController.pushNotificarEvento(title,body);
 }
 
 function mensajeEvento(sensor,evento){
