@@ -39,7 +39,7 @@ function pushNotificarEvento(title,body){
   	fakeDatabase.forEach(subscription => {
    	 promises.push(webpush.sendNotification(subscription, JSON.stringify(notificationPayload)));
   	});
-  	Promise.all(promises).then(() => );
+  	Promise.all(promises).then(() => console.log('OK'));
 }
 
 module.exports = {
