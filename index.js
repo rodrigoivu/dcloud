@@ -45,7 +45,9 @@ if (err) {
     console.log("Servidor de Api's de desimat cloud escuchando en http://localhost:" + port);
 	});
 
-	const io = socket.listen(server);
+	const io = socket.listen(server,{
+					path: '/evento/socket.io'
+				});
 	//SubscriberController.asignarSocket(io);
 	io.sockets.on('connection', (socket) => { 
 		SubscriberController.asignarSocket(socket);
