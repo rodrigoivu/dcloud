@@ -480,7 +480,8 @@ function notificar(date,sensor,evento,valor){
 
 function mensajeEvento(sensor,evento){
 	if(socketLocal){
-		socketLocal.emit('evento', {sensor: sensor, evento: evento});
+		// socketLocal.emit('evento', {sensor: sensor, evento: evento});
+		socketLocal.to('evento').emit('evento', {sensor: sensor, evento: evento});
 	}
 }
 module.exports = {

@@ -28,7 +28,7 @@ function pushNotificar(req,res){
 }
 
 function pushNotificarEvento(title,body){
-	var pathNoImage = path.resolve( __dirname, '../assets/no-img.jpg');
+	var pathNoImage = 'https://d-cloud.desimat.cl/api/get-image-user/5c1bae957fb66a05816d0b35-408.jpg';
 	console.log(pathNoImage);
 	const notificationPayload = {
 	    notification: {
