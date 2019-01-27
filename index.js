@@ -50,7 +50,7 @@ if (err) {
 				});
 	//SubscriberController.asignarSocket(io);
 	io.sockets.on('connection', (socket) => {
-		socket.join('evento');
+		//socket.join('evento');
 		SubscriberController.asignarSocket(socket);
 		// socket.on('evento', (data) => {
 		//    socket.emit('mensajeEvento', {user: 'Servidor', message: 'Hola Cliente'});
