@@ -198,7 +198,7 @@ function guardaEventoentrada(sensor,descripcion,evento,valor){
 					console.log("No guardó Eventoentrada");
 				}else{
 					//console.log("Guardó evento:"+sensor);
-					//notificar(date,sensor,evento,valor);
+					notificar(date,sensor,evento,valor);
 					mensajeEvento(sensor,evento);
 				}
 			}
