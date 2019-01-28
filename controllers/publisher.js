@@ -15,7 +15,7 @@ function enviarMqtt(){
 function recibeOrden(socket){
 		socket.on('recibeOrden', (data) => {
 		   dataMqtt=data;	
-           console.log(data);
+           //console.log(data);
            enviarMqtt();
         });
 }

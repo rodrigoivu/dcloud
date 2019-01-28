@@ -50,7 +50,7 @@ function manejoTopicoItem1( message, topico ){
 
     topicoLocal=topico;
     var mensaje;
-    console.log(message);
+    //console.log(message);
 	mensaje = JSON.parse(message);
     if (mensaje.TAG){
     	var tag = mensaje.tag;
@@ -172,7 +172,7 @@ function guardaDI(){
 			if(!itemStored){
 				console.log("No guardó DI");
 			}else{
-				console.log("DI Guardado");
+				//console.log("DI Guardado");
 				msjDI=alarma;
 				//avisoEntradasPLC(topicoLocal,msjTag,msjDI);
 			}
@@ -273,8 +273,8 @@ function detectaEventoAI(timestamp, elementosAI){
 	       c=max-m*999;
 	       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
 	    }
-	    console.log('limite: '+limite);
-	    console.log('dato: '+ datoentradaescalado);
+	    //console.log('limite: '+limite);
+	    //console.log('dato: '+ datoentradaescalado);
 	    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
         	// console.log('esta normal');
 	    }else{
@@ -296,7 +296,7 @@ function guardaDO(){
 	   			}else{
 	   				items=itemsFound;
 	   				for (var i = 0; i < items.length; i++) {
-				    	console.log(items[i]);
+				    	//console.log(items[i]);
 				    	var params={valor: arrayGuardaDO[i] }
 				    	Digitaloutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
 							if(err){ console.log("err: "+ err);	}
@@ -419,7 +419,7 @@ function buscaTagPersona(tag){
 }
 
 function buscaTagObjeto(tag){
-	console.log('Buscando Tag Objeto');
+	//console.log('Buscando Tag Objeto');
 	var idObjeto = null;
 	var idTagObjeto = null;
 	//BUSCAR EN OBJETOS
@@ -442,7 +442,7 @@ function buscaTagObjeto(tag){
 }
 
 function registraNuevoTag(tag){
-   console.log('registrando TAG');
+   //console.log('registrando TAG');
 	var nuevotag = new Nuevotag({
 		tag: tag,
 		destino: 'Inicial'
