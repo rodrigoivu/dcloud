@@ -469,8 +469,9 @@ function manejoTopicoItem2( message, topico ){
 	console.log(topico + ": "+ message) 
 }
 
-function asignarSocket(socket){
+function asignarSocket(socket,io){
     socketLocal=socket;
+    ioLocal=io;
 }
 function notificar(date,sensor,evento,valor){
 	var title = sensor+' '+evento;
@@ -481,9 +482,10 @@ function notificar(date,sensor,evento,valor){
 function mensajeEvento(sensor,evento){
 	if(socketLocal){
 		//socketLocal.join('evento');
-		socketLocal.broadcast.emit('evento', {sensor: sensor, evento: evento});
+		//socketLocal.broadcast.emit('evento', {sensor: sensor, evento: evento});
 		//socketLocal.join('evento');
 		//socketLocal.to('evento').emit({sensor: sensor, evento: evento});
+		ioLocal.emit({sensor: sensor, evento: evento});
 	}
 }
 module.exports = {
