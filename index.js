@@ -1,14 +1,14 @@
 'use strict'
 //Usar las siguientes directivas para https
- var https = require('https');
- var fs = require('fs');
+ // var https = require('https');
+ // var fs = require('fs');
 
-var credentials = {
-	//ca: fs.readFileSync("/etc/letsencrypt/live/centropiecmds.cl/ca.pem"), //la certification authority o CA
-	key: fs.readFileSync("/etc/letsencrypt/live/d-cloud.desimat.cl/privkey.pem"), //la clave SSL, que es el primer archivo que generamos ;)
-	cert: fs.readFileSync("/etc/letsencrypt/live/d-cloud.desimat.cl/fullchain.pem") //el certificado
-	// //cert: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/fullchain.pem", 'utf8')
-};
+// var credentials = {
+// 	//ca: fs.readFileSync("/etc/letsencrypt/live/centropiecmds.cl/ca.pem"), //la certification authority o CA
+// 	key: fs.readFileSync("/etc/letsencrypt/live/d-cloud.desimat.cl/privkey.pem"), //la clave SSL, que es el primer archivo que generamos ;)
+// 	cert: fs.readFileSync("/etc/letsencrypt/live/d-cloud.desimat.cl/fullchain.pem") //el certificado
+// 	// //cert: fs.readFileSync("/etc/nginx/certs/centropiecmds.cl/fullchain.pem", 'utf8')
+// };
 
 //app: archivo contiene funcionalidades de Express,para el armado de la infraestructura de la API
 var app = require('./app');
