@@ -485,7 +485,7 @@ function mensajeEvento(sensor,evento){
 		//socketLocal.broadcast.emit('evento', {sensor: sensor, evento: evento});
 		//socketLocal.join('evento');
 		//socketLocal.to('evento').emit({sensor: sensor, evento: evento});
-		ioLocal.emit({sensor: sensor, evento: evento});
+		ioLocal.emit('evento',{sensor: sensor, evento: evento});
 	}
 }
 module.exports = {
