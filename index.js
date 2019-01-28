@@ -50,7 +50,7 @@ if (err) {
 				});
 	//SubscriberController.asignarSocket(io);
 	io.sockets.on('connection', (socket) => {
-		console.id();
+		socket.id();
 		//socket.join('evento');
 		SubscriberController.asignarSocket(socket);
 		// socket.on('evento', (data) => {
