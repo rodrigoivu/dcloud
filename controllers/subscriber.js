@@ -480,7 +480,8 @@ function notificar(date,sensor,evento,valor){
 
 function mensajeEvento(sensor,evento){
 	if(socketLocal){
-		 socketLocal.broadcast.emit('evento', {sensor: sensor, evento: evento});
+		socket.join('evento');
+		socketLocal.broadcast.to('evento').emit('evento', {sensor: sensor, evento: evento});
 		//socketLocal.join('evento');
 		//socketLocal.to('evento').emit({sensor: sensor, evento: evento});
 	}
