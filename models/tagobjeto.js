@@ -9,7 +9,7 @@ var TagobjetoSchema = new Schema({
   tag: { type: String, unique: true, required: [true,'El tag es requerido'] },
   objeto: { type: Schema.Types.ObjectId,ref:'Objeto',required: [true,'El tipo de objeto es requerido']},
   nserie: { type: String, unique: true, required: [true,'El número de serie es requerido'] },
-  nparte: { type: String, required: [true,'El número de parte es requerido'] },
+  nparte: { type: String, required: [true,'El número de parte es requerido'] }
 
 });
 

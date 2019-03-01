@@ -2,6 +2,7 @@
 
 var Mensaje = require('../models/mensaje');
 var Persona = require('../models/persona');
+var Objeto = require('../models/objeto');
 var Tagobjeto = require('../models/tagobjeto');
 var Nuevotag = require('../models/nuevotag');
 var Analoginput = require('../models/analoginput');
@@ -10,6 +11,8 @@ var Eventoentrada = require('../models/eventoentrada');
 var Elementocanvas = require('../models/elementocanvas');
 var Digitaloutput = require('../models/digitaloutput');
 var Analogoutput = require('../models/analogoutput');
+var Eventotagobjeto = require('../models/eventotagobjeto');
+var Eventotagpersona = require('../models/eventotagpersona');
 
 var PushnotificationsController = require ('../controllers/pushnotifications');
 
@@ -26,7 +29,6 @@ var arrayGuardaAO1=[];
 var arrayGuardaAO2=[];
 var arrayGuardaAO3=[];
 var topicoLocal='';
-
 
 //================================================
 // FILTRA DATA
@@ -50,11 +52,12 @@ function manejoTopicoItem1( message, topico ){
 
     topicoLocal=topico;
     var mensaje;
-    //console.log(message);
+    console.log(message);
 	mensaje = JSON.parse(message);
     if (mensaje.TAG){
     	var tag = mensaje.tag;
-    	buscaTagPersona(tag);
+    	var dir =mensaje.d; //d de direccion
+    	buscaTagPersona(tag,dir);
     }
     if (mensaje.DI){
     	var di1 = mensaje.p1;
@@ -172,7 +175,7 @@ function guardaDI(){
 			if(!itemStored){
 				console.log("No guardó DI");
 			}else{
-				//console.log("DI Guardado");
+				console.log("DI Guardado");
 				msjDI=alarma;
 				//avisoEntradasPLC(topicoLocal,msjTag,msjDI);
 			}
@@ -273,8 +276,8 @@ function detectaEventoAI(timestamp, elementosAI){
 	       c=max-m*999;
 	       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
 	    }
-	    //console.log('limite: '+limite);
-	    //console.log('dato: '+ datoentradaescalado);
+	    console.log('limite: '+limite);
+	    console.log('dato: '+ datoentradaescalado);
 	    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
         	// console.log('esta normal');
 	    }else{
@@ -296,7 +299,7 @@ function guardaDO(){
 	   			}else{
 	   				items=itemsFound;
 	   				for (var i = 0; i < items.length; i++) {
-				    	//console.log(items[i]);
+				    	console.log(items[i]);
 				    	var params={valor: arrayGuardaDO[i] }
 				    	Digitaloutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
 							if(err){ console.log("err: "+ err);	}
@@ -397,29 +400,32 @@ function guardaAO3(){
 	   	);
 }
 
-function buscaTagPersona(tag){
+function buscaTagPersona(tag,dir){
 	var idPersona=null;
 	//BUSCAR EN PERSONAS
     Persona.findOne({'tag': tag}, (err,itemFound) => { 
 		if(err){
 			console.log("err: "+ err);
 			msjTag='';
-			buscaTagObjeto(tag);
+			buscaTagObjeto(tag,dir);
 		}else{
 			if(!itemFound){
 				console.log("no existe persona: " + itemFound);
 				msjTag='';
-				buscaTagObjeto(tag);
+				buscaTagObjeto(tag,dir);
 			}else{
 				msjTag='';
 				idPersona=itemFound._id;
+				registraEventoTagPersona(idPersona,dir);
+				console.log('idPersona');
+				
 			}
 		}
 	});
 }
 
-function buscaTagObjeto(tag){
-	//console.log('Buscando Tag Objeto');
+function buscaTagObjeto(tag,dir){
+	console.log('Buscando Tag Objeto');
 	var idObjeto = null;
 	var idTagObjeto = null;
 	//BUSCAR EN OBJETOS
@@ -430,19 +436,113 @@ function buscaTagObjeto(tag){
 		}else{
 			if(!itemFound){
 				console.log("no existe tagobjeto: " + itemFound);
-				msjTag='';
 				registraNuevoTag(tag);
 			}else{
 				idTagObjeto = itemFound._id;
 				idObjeto = itemFound.objeto;
-				msjTag='';
+				registraEventoTagObjeto(idObjeto,itemFound.nserie,itemFound.nparte,dir);
+				console.log('idObjeto');
+			}
+		}
+	});
+}
+
+function registraEventoTagObjeto(idObj,nserie,nparte,dir){
+	var date= new Date;
+	console.log('registrando evento tag objeto:');
+	var nuevoeventotagobjeto = new Eventotagobjeto({
+		timestamp: date,
+		direccion: dir,
+		objeto:idObj,
+		nserie: nserie,
+	 	nparte: nparte
+	});
+	nuevoeventotagobjeto.save((err, itemStored) => {
+
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemStored){
+				console.log("No guardó tag");
+			}else{
+				buscarStockActual(idObj,dir);
+			}
+		}
+	});
+}
+function buscarStockActual(idObj,dir){
+	var stockactual;
+	//Buscar stock actual
+	Objeto.findById(idObj, (err,itemFound) => { 
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemFound){
+				console.log('Imposible rescatar el item');
+			}else{
+				
+				if(itemFound.stock == null){
+					stockactual= '0';
+				}else{
+					stockactual= itemFound.stock;
+				}
+				actualizaStockObjeto(idObj,dir,stockactual);
+			}
+		}
+	});
+}
+function actualizaStockObjeto(idObj,dir,stockactual){
+	var stockNumber;
+	var stockString;
+	var stockInicial=parseInt(stockactual);
+	if(dir == '1'){
+		stockNumber=stockInicial+1
+	}
+	if(dir == '0'){
+		stockNumber=stockInicial-1
+	}
+	stockString=stockNumber;
+	var params = {
+		stock:stockString
+	};
+	Objeto.findByIdAndUpdate(idObj, params, { new: true }, (err, itemUpdated) => { 
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemUpdated){
+				console.log('Imposible actualizar item');
+			}else{
+				mensajeTag();
+			}
+		}
+	});
+	
+}
+
+function registraEventoTagPersona(idPer,dir){
+	var date= new Date;
+	console.log('registrando evento tag persona:');
+	var nuevoeventotagpersona = new Eventotagpersona({
+		timestamp: date,
+		direccion: dir,
+		persona:idPer,
+	});
+	nuevoeventotagpersona.save((err, itemStored) => {
+
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemStored){
+				console.log("No guardó tag");
+			}else{
+				mensajeTag();
 			}
 		}
 	});
 }
 
 function registraNuevoTag(tag){
-   //console.log('registrando TAG');
+   console.log('registrando TAG:'+tag);
 	var nuevotag = new Nuevotag({
 		tag: tag,
 		destino: 'Inicial'
@@ -486,6 +586,15 @@ function mensajeEvento(sensor,evento){
 		//socketLocal.join('evento');
 		//socketLocal.to('evento').emit({sensor: sensor, evento: evento});
 		ioLocal.emit('evento',{sensor: sensor, evento: evento});
+	}
+}
+function mensajeTag(){
+	if(socketLocal){
+		//socketLocal.join('evento');
+		//socketLocal.broadcast.emit('evento', {sensor: sensor, evento: evento});
+		//socketLocal.join('evento');
+		//socketLocal.to('evento').emit({sensor: sensor, evento: evento});
+		ioLocal.emit('Tag',{mensaje: 'tag'});
 	}
 }
 module.exports = {

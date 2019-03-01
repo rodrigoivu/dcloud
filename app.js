@@ -29,6 +29,8 @@ var digitaloutput_routes = require('./routes/digitaloutput');
 var configuracion_routes = require('./routes/configuracion');
 var elementocanvasdi_routes = require('./routes/elementocanvasdi');
 var pushnotifications_routes = require('./routes/pushnotifications');
+var eventotagobjeto_routes = require('./routes/eventotagobjeto');
+var eventotagpersona_routes = require('./routes/eventotagpersona');
 // create application/x-www-form-urlencoded parser
 app.use(bodyParser.urlencoded({extended:false}));
 // create application/json parser
@@ -60,6 +62,8 @@ app.use('/api', digitaloutput_routes);
 app.use('/api', configuracion_routes);
 app.use('/api', elementocanvasdi_routes);
 app.use('/push', pushnotifications_routes);
+app.use('/api', eventotagobjeto_routes);
+app.use('/api', eventotagpersona_routes);
 
 app.get('*', function(req,res,next){
   res.sendFile(path.resolve('./client/index.html'));
