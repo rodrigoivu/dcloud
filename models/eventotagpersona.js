@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var EventotagpersonaSchema = new Schema({
 
-	timestamp: { type: String, required: false },
+	timestamp: { type: Date, required: false },
 	direccion: { type: String, required: false},
 	persona: { type: Schema.Types.ObjectId,ref:'Persona',required: false}
 

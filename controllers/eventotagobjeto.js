@@ -89,13 +89,9 @@ function itemsRangoFechas(req,res){
 	   				if(!itemsFound){
 						res.status(404).send({message: 'Imposible mostrar información'});
 					}else{
-						//OJO CAMBIAR NOMBRE DE COLLECCION Y CAMPOS SEGÚN LA CONSULTA
-		   				Eventotagobjeto.countDocuments({}, (err,conteo) =>{
-		   					res.status(200).send({
-								items: itemsFound,
-								total: conteo
-							});
-		   				});
+						res.status(200).send({
+							items: itemsFound
+						});
 		   			}
 	   				
 	   			}
