@@ -13,5 +13,7 @@ var md_upload = multipart({ uploadDir: './uploads/planta'});
  api.put('/actualiza-configuracion/:id',[md_auth.ensureAuth, md_auth.ensureAdminUser], ConfiguracionController.actualizaItem);
  api.get('/configuracion-ultimo',[md_auth.ensureAuth,md_auth.ensureAdminUser], ConfiguracionController.itemUltimo);
  api.put('/upload-image-configuracion/:id',[md_auth.ensureAuth,md_auth.ensureAdminUser, md_upload],ConfiguracionController.uploadImage);
+ api.put('/upload-image-logo-configuracion/:id',[md_auth.ensureAuth,md_auth.ensureAdminUser, md_upload],ConfiguracionController.uploadImageLogo);
+ api.put('/upload-image-corporativa-configuracion/:id',[md_auth.ensureAuth,md_auth.ensureAdminUser, md_upload],ConfiguracionController.uploadImageCorporativa);
  api.get('/get-image-configuracion/:imageFile',ConfiguracionController.getImageFile);
 module.exports = api;

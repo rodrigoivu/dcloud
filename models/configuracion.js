@@ -6,6 +6,10 @@ var Schema = mongoose.Schema;
 //OJO CAMBIAR NOMBRE DE SCHEMA SEGUN ARCHIVO
 var ConfiguracionSchema = new Schema({
 	image: { type: String, required: false },
+	imagelogo: { type: String, required: false },
+	imagecorporativa: { type: String, required: false },
+	titulodash1:{ type: String, required: false },
+	titulodas2:{ type: String, required: false },
 	titulocontrol:{ type: String, required: false },
 	tituloplanta:{ type: String, required: false },
 	titulosalidas:{ type: String, required: false },
