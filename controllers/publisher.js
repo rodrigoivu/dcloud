@@ -1,5 +1,6 @@
 var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://165.227.26.150')
+//var client  = mqtt.connect('mqtt://165.227.26.150');
+var client  = mqtt.connect('mqtt://18.228.196.66'); //AWS desimat
 var dataMqtt;
 
 client.on('connect', function () {

@@ -52,7 +52,7 @@ function manejoTopicoItem1( message, topico ){
 
     topicoLocal=topico;
     var mensaje;
-    console.log(message);
+    //console.log(message);
 	mensaje = JSON.parse(message);
     if (mensaje.TAG){
     	var tag = mensaje.tag;
@@ -175,8 +175,9 @@ function guardaDI(){
 			if(!itemStored){
 				console.log("No guardó DI");
 			}else{
-				console.log("DI Guardado");
-				msjDI=alarma;
+				//console.log("DI Guardado");
+				mensajeDI(digitalinput);
+				//msjDI=alarma;
 				//avisoEntradasPLC(topicoLocal,msjTag,msjDI);
 			}
 		}
@@ -210,7 +211,7 @@ function guardaEventoentrada(sensor,descripcion,evento,valor){
 }
 
 function guardaAI(){
-    var date= new Date;
+    var date = new Date;
     var elementosCanvas=[];
 	var analoginput = new Analoginput({
 			timestamp: date,
@@ -248,7 +249,9 @@ function guardaAI(){
 			if(!itemStored){
 				console.log("No guardó AI");
 			}else{
-
+				//Enviar dato por socket
+				console.log('enviar por socket'+analoginput);
+				mensajeAI(analoginput);
 			}
 		}
 	});
@@ -299,12 +302,13 @@ function guardaDO(){
 	   			}else{
 	   				items=itemsFound;
 	   				for (var i = 0; i < items.length; i++) {
-				    	console.log(items[i]);
+				    	//console.log(items[i]);
 				    	var params={valor: arrayGuardaDO[i] }
 				    	Digitaloutput.findByIdAndUpdate(items[i]._id, params, { new: true }, (err, itemUpdated) => { 
 							if(err){ console.log("err: "+ err);	}
 						});
 				    }
+				    mensajeDO(arrayGuardaDO);
 	   			}
 	   		}
 	   	);
@@ -333,6 +337,7 @@ function guardaAO1(){
 							if(err){ console.log("err: "+ err);	}
 						});
 				      }
+				      mensajeAO1(arrayGuardaAO1);
 				    }
 	   				
 	   			}
@@ -364,6 +369,7 @@ function guardaAO2(){
 							if(err){ console.log("err: "+ err);	}
 						});
 				      }
+				      mensajeAO2(arrayGuardaAO2);
 				    }
 	   			}
 	   		}
@@ -394,6 +400,7 @@ function guardaAO3(){
 							if(err){ console.log("err: "+ err);	}
 						});
 				      }
+				      mensajeAO3(arrayGuardaAO3);
 				    }
 	   			}
 	   		}
@@ -417,7 +424,7 @@ function buscaTagPersona(tag,dir){
 				msjTag='';
 				idPersona=itemFound._id;
 				registraEventoTagPersona(idPersona,dir);
-				console.log('idPersona');
+				//console.log('idPersona');
 				
 			}
 		}
@@ -425,7 +432,7 @@ function buscaTagPersona(tag,dir){
 }
 
 function buscaTagObjeto(tag,dir){
-	console.log('Buscando Tag Objeto');
+	//console.log('Buscando Tag Objeto');
 	var idObjeto = null;
 	var idTagObjeto = null;
 	//BUSCAR EN OBJETOS
@@ -441,7 +448,7 @@ function buscaTagObjeto(tag,dir){
 				idTagObjeto = itemFound._id;
 				idObjeto = itemFound.objeto;
 				registraEventoTagObjeto(idObjeto,itemFound.nserie,itemFound.nparte,dir);
-				console.log('idObjeto');
+				//console.log('idObjeto');
 			}
 		}
 	});
@@ -449,7 +456,7 @@ function buscaTagObjeto(tag,dir){
 
 function registraEventoTagObjeto(idObj,nserie,nparte,dir){
 	var date= new Date;
-	console.log('registrando evento tag objeto:');
+	//console.log('registrando evento tag objeto:');
 	var nuevoeventotagobjeto = new Eventotagobjeto({
 		timestamp: date,
 		direccion: dir,
@@ -521,7 +528,7 @@ function actualizaStockObjeto(idObj,dir,stockactual){
 
 function registraEventoTagPersona(idPer,dir){
 	var date= new Date;
-	console.log('registrando evento tag persona:');
+	//console.log('registrando evento tag persona:');
 	var nuevoeventotagpersona = new Eventotagpersona({
 		timestamp: date,
 		direccion: dir,
@@ -542,7 +549,7 @@ function registraEventoTagPersona(idPer,dir){
 }
 
 function registraNuevoTag(tag){
-   console.log('registrando TAG:'+tag);
+  // console.log('registrando TAG:'+tag);
 	var nuevotag = new Nuevotag({
 		tag: tag,
 		destino: 'Inicial'
@@ -566,7 +573,7 @@ function registraNuevoTag(tag){
 }
 
 function manejoTopicoItem2( message, topico ){
-	console.log(topico + ": "+ message) 
+	//console.log(topico + ": "+ message) 
 }
 
 function asignarSocket(socket,io){
@@ -595,6 +602,36 @@ function mensajeTag(){
 		//socketLocal.join('evento');
 		//socketLocal.to('evento').emit({sensor: sensor, evento: evento});
 		ioLocal.emit('Tag',{mensaje: 'tag'});
+	}
+}
+function mensajeAI(data){
+	if(socketLocal){
+		ioLocal.emit('AI',{data: data});
+	}
+}
+function mensajeDI(data){
+	if(socketLocal){
+		ioLocal.emit('DI',{data: data});
+	}
+}
+function mensajeDO(data){
+	if(socketLocal){
+		ioLocal.emit('DO',{data: data});
+	}
+}
+function mensajeAO1(data){
+	if(socketLocal){
+		ioLocal.emit('AO1',{data: data});
+	}
+}
+function mensajeAO2(data){
+	if(socketLocal){
+		ioLocal.emit('AO2',{data: data});
+	}
+}
+function mensajeAO3(data){
+	if(socketLocal){
+		ioLocal.emit('AO3',{data: data});
 	}
 }
 module.exports = {
