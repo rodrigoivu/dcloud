@@ -9,7 +9,7 @@ var ConfiguracionSchema = new Schema({
 	imagelogo: { type: String, required: false },
 	imagecorporativa: { type: String, required: false },
 	titulodash1:{ type: String, required: false },
-	titulodas2:{ type: String, required: false },
+	titulodash2:{ type: String, required: false },
 	titulocontrol:{ type: String, required: false },
 	tituloplanta:{ type: String, required: false },
 	titulosalidas:{ type: String, required: false },
@@ -17,11 +17,17 @@ var ConfiguracionSchema = new Schema({
 	tituloAO1:{ type: String, required: false },
 	tituloAO2:{ type: String, required: false },
 	tituloAO3:{ type: String, required: false },
+	tituloVI1:{ type: String, required: false },
+	tituloVI2:{ type: String, required: false },
+	tituloVI3:{ type: String, required: false },
 	subtitulosalidas:{ type: String, required: false },
 	subtituloDO1:{ type: String, required: false },
 	subtituloAO1:{ type: String, required: false },
 	subtituloAO2:{ type: String, required: false },
 	subtituloAO3:{ type: String, required: false },
+	subtituloVI1:{ type: String, required: false },
+	subtituloVI2:{ type: String, required: false },
+	subtituloVI3:{ type: String, required: false },
 },{ collection: 'configuracion'});
 
 //OJO CAMBIAR NOMBRE DE SCHEMA SEGUN ARCHIVO

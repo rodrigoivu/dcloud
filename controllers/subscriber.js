@@ -13,6 +13,8 @@ var Digitaloutput = require('../models/digitaloutput');
 var Analogoutput = require('../models/analogoutput');
 var Eventotagobjeto = require('../models/eventotagobjeto');
 var Eventotagpersona = require('../models/eventotagpersona');
+var Variableinterna = require('../models/variableinterna');
+var Variableinternacanvas = require('../models/variableinternacanvas');
 
 var PushnotificationsController = require ('../controllers/pushnotifications');
 
@@ -28,6 +30,9 @@ var arrayGuardaDO=[];
 var arrayGuardaAO1=[];
 var arrayGuardaAO2=[];
 var arrayGuardaAO3=[];
+var arrayGuardaVI1=[0,0,0,0,0,0,0,0];
+var arrayGuardaVI2=[0,0,0,0,0,0,0,0];
+var arrayGuardaVI3=[0,0,0,0,0,0,0,0];
 var topicoLocal='';
 
 //================================================
@@ -130,6 +135,42 @@ function manejoTopicoItem1( message, topico ){
 	    var ao8 = mensaje.p8;
 	    arrayGuardaAO3=[ao1,ao2,ao3,ao4,ao5,ao6,ao7,ao8];
 	    guardaAO3();
+    }
+    if(mensaje.VI==1){
+    	var vi1 = mensaje.p1;
+	    var vi2 = mensaje.p2;
+	    var vi3 = mensaje.p3;
+	    var vi4 = mensaje.p4;
+	    var vi5 = mensaje.p5;
+	    var vi6 = mensaje.p6;
+	    var vi7 = mensaje.p7;
+	    var vi8 = mensaje.p8;
+	    arrayGuardaVI1=[vi1,vi2,vi3,vi4,vi5,vi6,vi7,vi8];
+	    guardaVI1();
+    }
+    if(mensaje.VI==2){
+    	var vi1 = mensaje.p1;
+	    var vi2 = mensaje.p2;
+	    var vi3 = mensaje.p3;
+	    var vi4 = mensaje.p4;
+	    var vi5 = mensaje.p5;
+	    var vi6 = mensaje.p6;
+	    var vi7 = mensaje.p7;
+	    var vi8 = mensaje.p8;
+	    arrayGuardaVI2=[vi1,vi2,vi3,vi4,vi5,vi6,vi7,vi8];
+	    guardaVI2();
+    }
+    if(mensaje.VI==3){
+    	var vi1 = mensaje.p1;
+	    var vi2 = mensaje.p2;
+	    var vi3 = mensaje.p3;
+	    var vi4 = mensaje.p4;
+	    var vi5 = mensaje.p5;
+	    var vi6 = mensaje.p6;
+	    var vi7 = mensaje.p7;
+	    var vi8 = mensaje.p8;
+	    arrayGuardaVI3=[vi1,vi2,vi3,vi4,vi5,vi6,vi7,vi8];
+	    guardaVI3();
     }
 
    // if(tag!='null'){
@@ -250,7 +291,7 @@ function guardaAI(){
 				console.log("No guardó AI");
 			}else{
 				//Enviar dato por socket
-				console.log('enviar por socket'+analoginput);
+				//console.log('enviar por socket'+analoginput);
 				mensajeAI(analoginput);
 			}
 		}
@@ -279,8 +320,8 @@ function detectaEventoAI(timestamp, elementosAI){
 	       c=max-m*999;
 	       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
 	    }
-	    console.log('limite: '+limite);
-	    console.log('dato: '+ datoentradaescalado);
+	    //console.log('limite: '+limite);
+	    //console.log('dato: '+ datoentradaescalado);
 	    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
         	// console.log('esta normal');
 	    }else{
@@ -405,6 +446,345 @@ function guardaAO3(){
 	   			}
 	   		}
 	   	);
+}
+
+function guardaVI1(){
+	var date = new Date;
+    var variablesinternasCanvas=[];
+    var variableinternaSocket = new Variableinterna({
+			timestamp: date,
+			regleta: 1,
+			vi1: arrayGuardaVI1[0],
+			vi2: arrayGuardaVI1[1],
+			vi3: arrayGuardaVI1[2],
+			vi4: arrayGuardaVI1[3],
+			vi5: arrayGuardaVI1[4],
+			vi6: arrayGuardaVI1[5],
+			vi7: arrayGuardaVI1[6],
+			vi8: arrayGuardaVI1[7]
+		});
+	var variableinterna = new Variableinterna({
+			timestamp: date,
+			regleta: 1,
+			vi1: arrayGuardaVI1[0],
+			vi2: arrayGuardaVI1[1],
+			vi3: arrayGuardaVI1[2],
+			vi4: arrayGuardaVI1[3],
+			vi5: arrayGuardaVI1[4],
+			vi6: arrayGuardaVI1[5],
+			vi7: arrayGuardaVI1[6],
+			vi8: arrayGuardaVI1[7],
+			vi9: arrayGuardaVI2[0],
+			vi10: arrayGuardaVI2[1],
+			vi11: arrayGuardaVI2[2],
+			vi12: arrayGuardaVI2[3],
+			vi13: arrayGuardaVI2[4],
+			vi14: arrayGuardaVI2[5],
+			vi15: arrayGuardaVI2[6],
+			vi16: arrayGuardaVI2[7],
+			vi17: arrayGuardaVI3[0],
+			vi18: arrayGuardaVI3[1],
+			vi19: arrayGuardaVI3[2],
+			vi20: arrayGuardaVI3[3],
+			vi21: arrayGuardaVI3[4],
+			vi22: arrayGuardaVI3[5],
+			vi23: arrayGuardaVI3[6],
+			vi24: arrayGuardaVI3[7],
+		});
+	Variableinternacanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						variablesinternasCanvas=itemsFound;
+						detectaEventoVI1(variablesinternasCanvas);
+					}
+	   			}
+	   		}
+	   	);
+	variableinterna.save((err, itemStored) => {
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemStored){
+				console.log("No guardó VI");
+			}else{
+				mensajeVI(variableinternaSocket);
+			}
+		}
+	});
+}
+
+function guardaVI2(){
+	var date = new Date;
+    var variablesinternasCanvas=[];
+	var variableinternaSocket = new Variableinterna({
+			timestamp: date,
+			regleta: 2,
+			vi1: arrayGuardaVI2[0],
+			vi2: arrayGuardaVI2[1],
+			vi3: arrayGuardaVI2[2],
+			vi4: arrayGuardaVI2[3],
+			vi5: arrayGuardaVI2[4],
+			vi6: arrayGuardaVI2[5],
+			vi7: arrayGuardaVI2[6],
+			vi8: arrayGuardaVI2[7]
+		});
+	var variableinterna = new Variableinterna({
+			timestamp: date,
+			regleta: 2,
+			vi1: arrayGuardaVI1[0],
+			vi2: arrayGuardaVI1[1],
+			vi3: arrayGuardaVI1[2],
+			vi4: arrayGuardaVI1[3],
+			vi5: arrayGuardaVI1[4],
+			vi6: arrayGuardaVI1[5],
+			vi7: arrayGuardaVI1[6],
+			vi8: arrayGuardaVI1[7],
+			vi9: arrayGuardaVI2[0],
+			vi10: arrayGuardaVI2[1],
+			vi11: arrayGuardaVI2[2],
+			vi12: arrayGuardaVI2[3],
+			vi13: arrayGuardaVI2[4],
+			vi14: arrayGuardaVI2[5],
+			vi15: arrayGuardaVI2[6],
+			vi16: arrayGuardaVI2[7],
+			vi17: arrayGuardaVI3[0],
+			vi18: arrayGuardaVI3[1],
+			vi19: arrayGuardaVI3[2],
+			vi20: arrayGuardaVI3[3],
+			vi21: arrayGuardaVI3[4],
+			vi22: arrayGuardaVI3[5],
+			vi23: arrayGuardaVI3[6],
+			vi24: arrayGuardaVI3[7],
+		});
+	Variableinternacanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						variablesinternasCanvas=itemsFound;
+						detectaEventoVI2(variablesinternasCanvas);
+					}
+	   			}
+	   		}
+	   	);
+	variableinterna.save((err, itemStored) => {
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemStored){
+				console.log("No guardó VI");
+			}else{
+				mensajeVI(variableinternaSocket);
+			}
+		}
+	});
+}
+
+
+function guardaVI3(){
+	var date = new Date;
+    var variablesinternasCanvas=[];
+	var variableinternaSocket = new Variableinterna({
+			timestamp: date,
+			regleta: 3,
+			vi1: arrayGuardaVI3[0],
+			vi2: arrayGuardaVI3[1],
+			vi3: arrayGuardaVI3[2],
+			vi4: arrayGuardaVI3[3],
+			vi5: arrayGuardaVI3[4],
+			vi6: arrayGuardaVI3[5],
+			vi7: arrayGuardaVI3[6],
+			vi8: arrayGuardaVI3[7]
+		});
+	var variableinterna = new Variableinterna({
+			timestamp: date,
+			regleta: 3,
+			vi1: arrayGuardaVI1[0],
+			vi2: arrayGuardaVI1[1],
+			vi3: arrayGuardaVI1[2],
+			vi4: arrayGuardaVI1[3],
+			vi5: arrayGuardaVI1[4],
+			vi6: arrayGuardaVI1[5],
+			vi7: arrayGuardaVI1[6],
+			vi8: arrayGuardaVI1[7],
+			vi9: arrayGuardaVI2[0],
+			vi10: arrayGuardaVI2[1],
+			vi11: arrayGuardaVI2[2],
+			vi12: arrayGuardaVI2[3],
+			vi13: arrayGuardaVI2[4],
+			vi14: arrayGuardaVI2[5],
+			vi15: arrayGuardaVI2[6],
+			vi16: arrayGuardaVI2[7],
+			vi17: arrayGuardaVI3[0],
+			vi18: arrayGuardaVI3[1],
+			vi19: arrayGuardaVI3[2],
+			vi20: arrayGuardaVI3[3],
+			vi21: arrayGuardaVI3[4],
+			vi22: arrayGuardaVI3[5],
+			vi23: arrayGuardaVI3[6],
+			vi24: arrayGuardaVI3[7],
+		});
+	Variableinternacanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						variablesinternasCanvas=itemsFound;
+						detectaEventoVI3(variablesinternasCanvas);
+					}
+	   			}
+	   		}
+	   	);
+	variableinterna.save((err, itemStored) => {
+		if(err){
+			console.log("err: "+ err);
+		}else{
+			if(!itemStored){
+				console.log("No guardó VI");
+			}else{
+				mensajeVI(variableinternaSocket);
+			}
+		}
+	});
+}
+function detectaEventoVI1(elementosVI){
+	var name;
+	var min;
+	var max;
+	var limite;
+	var indicaalarma;
+	var datoentrada;
+	var datoentradaescalado;
+	var m;
+    var c;
+    var cantItems=elementosVI.length;
+	var endFor;
+	if(cantItems < 8){
+      endFor=cantItems;
+    }else{
+      endFor=8;
+    }
+    if(cantItems > 0){
+    	for (var i = 0; i < endFor; i++) {
+
+			name = elementosVI[i].name;
+			min = elementosVI[i].min;
+			max = elementosVI[i].max;
+			limite = elementosVI[i].limite;
+			indicaalarma = elementosVI[i].indicaalarma;
+			datoentrada = arrayGuardaVI1[i];
+		    if(max > min){
+		       m = (max-min)/999;
+		       c = max-m*999;
+		       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+		    }
+		    if ( indicaalarma != 'no' ) {
+		    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+			    }else{
+			    	var vi_indice=i+1;
+			    	//console.log('alarma:'+datoentradaescalado);
+			        guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+			    }
+		    }
+		}
+    }
+	
+}
+function detectaEventoVI2(elementosVI){
+	var name;
+	var min;
+	var max;
+	var limite;
+	var indicaalarma;
+	var datoentrada;
+	var datoentradaescalado;
+	var m;
+    var c;
+    var cantItems=elementosVI.length;
+    var endFor;
+    if(cantItems > 8 && cantItems < 16){
+      endFor=cantItems;
+    }
+    if(cantItems >=16 ){
+      endFor=16;
+    }
+    if(cantItems > 8){
+    	for (var i = 8; i < endFor; i++) {
+			name = elementosVI[i].name;
+			min = elementosVI[i].min;
+			max = elementosVI[i].max;
+			limite = elementosVI[i].limite;
+			indicaalarma = elementosVI[i].indicaalarma;
+			datoentrada = arrayGuardaVI2[i-8];
+		    if(max > min){
+		       m = (max-min)/999;
+		       c = max-m*999;
+		       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+		    }
+		    if ( indicaalarma != 'no' ) {
+		    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+			    }else{
+			    	var vi_indice=i+1;
+			        guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+			    }
+		    }
+		}
+    }
+	
+}
+
+function detectaEventoVI3(elementosVI){
+	var name;
+	var min;
+	var max;
+	var limite;
+	var indicaalarma;
+	var datoentrada;
+	var datoentradaescalado;
+	var m;
+    var c;
+    var cantItems=elementosVI.length;
+    var endFor;
+    if(cantItems > 16 && cantItems < 24){
+      endFor=cantItems;
+    }
+    if(cantItems >=24 ){
+      endFor=24;
+    }
+    if(cantItems > 16){
+    	for (var i = 16; i < endFor; i++) {
+			name = elementosVI[i].name;
+			min = elementosVI[i].min;
+			max = elementosVI[i].max;
+			limite = elementosVI[i].limite;
+			indicaalarma = elementosVI[i].indicaalarma;
+			datoentrada = arrayGuardaVI3[i-16];
+		    if(max > min){
+		       m = (max-min)/999;
+		       c = max-m*999;
+		       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+		    }
+		    if ( indicaalarma != 'no' ) {
+		    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+			    }else{
+			    	var vi_indice=i+1;
+			        guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+			    }
+		    }
+		}
+    }
+	
 }
 
 function buscaTagPersona(tag,dir){
@@ -632,6 +1012,12 @@ function mensajeAO2(data){
 function mensajeAO3(data){
 	if(socketLocal){
 		ioLocal.emit('AO3',{data: data});
+	}
+}
+function mensajeVI(data){
+	if(socketLocal){
+		//console.log(data);
+		ioLocal.emit('VI',{data: data});
 	}
 }
 module.exports = {
