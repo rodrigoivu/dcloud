@@ -45,7 +45,7 @@
  	var usuario = req.user; // viene del decode del token
  	var id = req.params.id; // viene del parametro :id, que se pone en la url.
 
- 	if ( usuario.role === 'ADMIN_ROLE' || usuario.role === 'ADMIN_DESIMAT' || req.user.sub === id ){  // el sub se crea en el token
+ 	if ( usuario.role === 'ADMIN_ROLE' || usuario.role === 'ADMIN_DESIMAT' || usuario.role === 'USER_AVANZADO' || req.user.sub === id ){  // el sub se crea en el token
  		next();
  		return;
  	} else {
@@ -66,6 +66,21 @@
  	} else {
   		return res.status(404).send({message:'Token no válido - No está autorizado' });
  	}
+ }
+
+ //================================================
+// Verificar ADMIN DESIMAT AVANZADO BASICO
+//================================================
+
+ exports.ensureAdminUserBasico = function(req, res, next){
+
+   var usuario = req.user; // viene del decode del token
+   if ( usuario.role === 'ADMIN_DESIMAT' || usuario.role === 'ADMIN_ROLE' || usuario.role === 'USER_AVANZADO' || usuario.role === 'USER_BASICO' ){
+     next();
+     return;
+   } else {
+      return res.status(404).send({message:'Token no válido - No está autorizado' });
+   }
  }
 
 //================================================

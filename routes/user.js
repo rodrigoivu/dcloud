@@ -13,8 +13,8 @@ var md_upload = multipart({ uploadDir: './uploads/imgUser'});
  api.post('/registra-usuario', UserController.registraUsuario);
  api.get('/busca-por-mail/:email', UserController.buscaPorMail); //se usa en la pagina de recuperar y se envia el mail
  api.get('/busca-por-id/:id', UserController.buscaPorId);
- api.get('/usuarios-paginados',[md_auth.ensureAuth,md_auth.ensureAdmin], UserController.usuariosPaginados);
- api.get('/usuarios-todos',[md_auth.ensureAuth,md_auth.ensureAdmin], UserController.usuariosTodos);
+ api.get('/usuarios-paginados',[md_auth.ensureAuth,md_auth.ensureAdminUser], UserController.usuariosPaginados);
+ api.get('/usuarios-todos',[md_auth.ensureAuth,md_auth.ensureAdminUser], UserController.usuariosTodos);
  api.put('/update-user/:id',[md_auth.ensureAuth,md_auth.ensureAdminIgualUsuario],UserController.updateUser);
  api.put('/update-user-password/:id',UserController.updateUserPassword);
  api.put('/upload-image-user/:id',[md_auth.ensureAuth,md_auth.ensureAdminIgualUsuario, md_upload],UserController.uploadImage);

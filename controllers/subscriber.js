@@ -9,6 +9,7 @@ var Analoginput = require('../models/analoginput');
 var Digitalinput = require('../models/digitalinput');
 var Eventoentrada = require('../models/eventoentrada');
 var Elementocanvas = require('../models/elementocanvas');
+var Elementocanvasdi = require('../models/elementocanvasdi');
 var Digitaloutput = require('../models/digitaloutput');
 var Analogoutput = require('../models/analogoutput');
 var Eventotagobjeto = require('../models/eventotagobjeto');
@@ -184,45 +185,114 @@ function manejoTopicoItem1( message, topico ){
     
 }
 function guardaDI(){
-	var estadoActualDI=arrayGuardaDI;
-	var i;
-	alarma=[];
-	for (i = 0; i < estadoActualDI.length; i++) { 
-	  if(estadoActualDI[i]>estadoAnteriorDI[i]){
-	  	alarma.push(i);
-	  	var di_indice=i+1;
-	  	guardaEventoentrada('DI '+di_indice,'entrada '+di_indice,'Activado',1);
-	  }
-	}
-	estadoAnteriorDI=estadoActualDI;
-
 	var date= new Date;
+	// var estadoActualDI=arrayGuardaDI;
+	// var i;
+	var elementosCanvasdi=[];
+
+	Elementocanvasdi.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvasdi");
+					}else{
+						elementosCanvasdi=itemsFound;
+						detectaEventoDI(date,elementosCanvasdi);
+					}
+	   			}
+	   		}
+	   	);
+
+	// alarma=[];
+	// for (i = 0; i < estadoActualDI.length; i++) { 
+	//   if(estadoActualDI[i]>estadoAnteriorDI[i]){
+	//   	alarma.push(i);
+	//   	var di_indice=i+1;
+	//   	guardaEventoentrada('DI '+di_indice,'entrada '+di_indice,'Activado',1);
+	//   }
+	// }
+	// estadoAnteriorDI=estadoActualDI;
+
+	
+	
+}
+function saveDI(date){
 	var digitalinput = new Digitalinput({
 			timestamp: date,
-			di1: estadoActualDI[0],
-			di2: estadoActualDI[1],
-			di3: estadoActualDI[2],
-			di4: estadoActualDI[3],
-			di5: estadoActualDI[4],
-			di6: estadoActualDI[5],
-			di7: estadoActualDI[6],
-			di8: estadoActualDI[7]
+			di1: arrayGuardaDI[0],
+			di2: arrayGuardaDI[1],
+			di3: arrayGuardaDI[2],
+			di4: arrayGuardaDI[3],
+			di5: arrayGuardaDI[4],
+			di6: arrayGuardaDI[5],
+			di7: arrayGuardaDI[6],
+			di8: arrayGuardaDI[7]
 		});
 	digitalinput.save((err, itemStored) => {
-
 		if(err){
 			console.log("err: "+ err);
 		}else{
 			if(!itemStored){
 				console.log("No guardó DI");
 			}else{
-				//console.log("DI Guardado");
 				mensajeDI(digitalinput);
-				//msjDI=alarma;
-				//avisoEntradasPLC(topicoLocal,msjTag,msjDI);
 			}
 		}
 	});
+}
+function detectaEventoDI(timestamp, elementosDI){
+	var condicion;
+    var ultimoDI=[];
+    var datoentrada;
+    var datoanterior;
+    var timestampanterior;
+    //Traer ultimo dato se Analoginput
+    Digitalinput.findOne({}) 
+	   //.sort([['timestamp', -1]])
+	   .sort({ timestamp: -1 })
+	   .exec(
+	   		(err, itemsFound) => {
+	   			if (err){
+	   				console.log(err);
+	   			}else{
+	   	     		ultimoDI=[	itemsFound.di1,
+								itemsFound.di2,
+								itemsFound.di3,
+								itemsFound.di4,
+								itemsFound.di5,
+								itemsFound.di6,
+								itemsFound.di7,
+								itemsFound.di8 ];
+					timestampanterior=	itemsFound.timestamp;		
+	   				//Si hay un ultimo dato comparar si es igual
+					for (var i = 0; i < elementosDI.length; i++) {
+						
+						condicion=elementosDI[i].condicion;
+						datoentrada=arrayGuardaDI[i];
+						datoanterior=ultimoDI[i];
+						var nombre = elementosDI[i].name;
+						//Si es normal abierta y se activa o si es normal cerrada y se abre
+						if((condicion=='NO' && datoentrada == 1) || (condicion=='NC' && datoentrada == 0)){
+							var tpo1 = timestampanterior.getTime();
+				            var tpo2 = timestamp.getTime();
+				            var diff=(tpo2-tpo1)/1000;
+							if(datoentrada!=datoanterior){
+								var di_indice=i+1;
+					            guardaEventoentrada('DI '+di_indice,nombre,'Activado',datoentrada);
+							}
+							if(datoentrada==datoanterior){
+				        		if(diff > 3600){
+				        		var di_indice=i+1;
+					            guardaEventoentrada('DI '+di_indice,nombre,'Activado',datoentrada);
+				        		}
+				        	}		
+						}
+					}
+					saveDI(timestamp);
+	   			}
+	   		});
 }
 function guardaEventoentrada(sensor,descripcion,evento,valor){
 
@@ -254,6 +324,24 @@ function guardaEventoentrada(sensor,descripcion,evento,valor){
 function guardaAI(){
     var date = new Date;
     var elementosCanvas=[];
+
+	Elementocanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						elementosCanvas=itemsFound;
+						detectaEventoAI(date,elementosCanvas);
+					}
+	   			}
+	   		}
+	   	);
+}
+
+function saveAI(date){
 	var analoginput = new Analoginput({
 			timestamp: date,
 			ai1: arrayGuardaAI[0],
@@ -265,33 +353,14 @@ function guardaAI(){
 			ai7: arrayGuardaAI[6],
 			ai8: arrayGuardaAI[7]
 		});
-	
-	Elementocanvas.find({}) 
-	   .exec((err, itemsFound) => {
-	   			if (err){
-	   				console.log("err: "+ err);
-	   			}else{
-					if(!itemsFound){
-						console.log("No existen items elementocanvas");
-					}else{
-						elementosCanvas=itemsFound;
-						detectaEventoAI(analoginput.timestamp,elementosCanvas);
-					}
-	   			}
-	   		}
-	   	);
-
 
 	analoginput.save((err, itemStored) => {
-
 		if(err){
 			console.log("err: "+ err);
 		}else{
 			if(!itemStored){
 				console.log("No guardó AI");
 			}else{
-				//Enviar dato por socket
-				//console.log('enviar por socket'+analoginput);
 				mensajeAI(analoginput);
 			}
 		}
@@ -307,29 +376,67 @@ function detectaEventoAI(timestamp, elementosAI){
 	var datoentradaescalado;
 	var m;
     var c;
-    
-	for (var i = 0; i < elementosAI.length; i++) {
-		min=elementosAI[i].min;
-		max=elementosAI[i].max;
-		limite=elementosAI[i].limite;
-		indicaalarma=elementosAI[i].indicaalarma;
-		datoentrada=arrayGuardaAI[i]
-		//Calculo datoentradaescalado
-	    if(max > min){
-	       m=(max-min)/999;
-	       c=max-m*999;
-	       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-	    }
-	    //console.log('limite: '+limite);
-	    //console.log('dato: '+ datoentradaescalado);
-	    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-        	// console.log('esta normal');
-	    }else{
-	    	var ai_indice=i+1;
-	        guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
-	    }
-	}
-	
+    var ultimoAI=[];
+    var datoanterior;
+    var timestampanterior;
+    //Traer ultimo dato se Analoginput
+    Analoginput.findOne({}) 
+	   //.sort([['timestamp', -1]])
+	   .sort({ timestamp: -1 })
+	   .exec(
+	   		(err, itemsFound) => {
+	   			if (err){
+	   				console.log(err);
+	   			}else{
+	   	     		ultimoAI=[	itemsFound.ai1,
+								itemsFound.ai2,
+								itemsFound.ai3,
+								itemsFound.ai4,
+								itemsFound.ai5,
+								itemsFound.ai6,
+								itemsFound.ai7,
+								itemsFound.ai8 ];
+					timestampanterior=	itemsFound.timestamp;		
+	   				//Si hay un ultimo dato comparar si es igual
+					for (var i = 0; i < elementosAI.length; i++) {
+						min=elementosAI[i].min;
+						max=elementosAI[i].max;
+						limite=elementosAI[i].limite;
+						indicaalarma=elementosAI[i].indicaalarma;
+						datoentrada=arrayGuardaAI[i];
+						datoanterior=ultimoAI[i];
+						//Calculo datoentradaescalado
+					    if(max > min){
+					       m=(max-min)/999;
+					       c=max-m*999;
+					       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+					    }
+					    
+					    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+				        	// console.log('esta normal');
+					    }else{
+					    	//Calcula el tiempo que paso desde la ultima entrada
+					    	var tpo1 = timestampanterior.getTime();
+				            var tpo2 = timestamp.getTime();
+				            var diff=(tpo2-tpo1)/1000;
+				            
+					    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+					    		var ai_indice=i+1;
+					            guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
+					        }
+					        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+					        if(datoentrada==datoanterior){
+				        		if(diff > 3600){
+				        			var ai_indice=i+1;
+						            guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
+				        		}
+					        }
+					    }
+					}
+					saveAI(timestamp);
+	   			}
+	   			
+	   		});
 }
 //RESPUESTA DE SALIDAS ANALOGAS y digitales
 function guardaDO(){
@@ -451,7 +558,26 @@ function guardaAO3(){
 function guardaVI1(){
 	var date = new Date;
     var variablesinternasCanvas=[];
-    var variableinternaSocket = new Variableinterna({
+
+	Variableinternacanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						variablesinternasCanvas=itemsFound;
+						detectaEventoVI1(date,variablesinternasCanvas);
+					}
+	   			}
+	   		}
+	   	);
+	
+}
+
+function saveVI1(date){
+	var variableinternaSocket = new Variableinterna({
 			timestamp: date,
 			regleta: 1,
 			vi1: arrayGuardaVI1[0],
@@ -491,20 +617,6 @@ function guardaVI1(){
 			vi23: arrayGuardaVI3[6],
 			vi24: arrayGuardaVI3[7],
 		});
-	Variableinternacanvas.find({}) 
-	   .exec((err, itemsFound) => {
-	   			if (err){
-	   				console.log("err: "+ err);
-	   			}else{
-					if(!itemsFound){
-						console.log("No existen items elementocanvas");
-					}else{
-						variablesinternasCanvas=itemsFound;
-						detectaEventoVI1(variablesinternasCanvas);
-					}
-	   			}
-	   		}
-	   	);
 	variableinterna.save((err, itemStored) => {
 		if(err){
 			console.log("err: "+ err);
@@ -521,6 +633,25 @@ function guardaVI1(){
 function guardaVI2(){
 	var date = new Date;
     var variablesinternasCanvas=[];
+	
+	Variableinternacanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						variablesinternasCanvas=itemsFound;
+						detectaEventoVI2(date,variablesinternasCanvas);
+					}
+	   			}
+	   		}
+	   	);
+	
+}
+
+function saveVI2(date){
 	var variableinternaSocket = new Variableinterna({
 			timestamp: date,
 			regleta: 2,
@@ -561,20 +692,6 @@ function guardaVI2(){
 			vi23: arrayGuardaVI3[6],
 			vi24: arrayGuardaVI3[7],
 		});
-	Variableinternacanvas.find({}) 
-	   .exec((err, itemsFound) => {
-	   			if (err){
-	   				console.log("err: "+ err);
-	   			}else{
-					if(!itemsFound){
-						console.log("No existen items elementocanvas");
-					}else{
-						variablesinternasCanvas=itemsFound;
-						detectaEventoVI2(variablesinternasCanvas);
-					}
-	   			}
-	   		}
-	   	);
 	variableinterna.save((err, itemStored) => {
 		if(err){
 			console.log("err: "+ err);
@@ -588,10 +705,27 @@ function guardaVI2(){
 	});
 }
 
-
 function guardaVI3(){
 	var date = new Date;
     var variablesinternasCanvas=[];
+	
+	Variableinternacanvas.find({}) 
+	   .exec((err, itemsFound) => {
+	   			if (err){
+	   				console.log("err: "+ err);
+	   			}else{
+					if(!itemsFound){
+						console.log("No existen items elementocanvas");
+					}else{
+						variablesinternasCanvas=itemsFound;
+						detectaEventoVI3(date,variablesinternasCanvas);
+					}
+	   			}
+	   		}
+	   	);
+	
+}
+function saveVI3(date){
 	var variableinternaSocket = new Variableinterna({
 			timestamp: date,
 			regleta: 3,
@@ -632,20 +766,6 @@ function guardaVI3(){
 			vi23: arrayGuardaVI3[6],
 			vi24: arrayGuardaVI3[7],
 		});
-	Variableinternacanvas.find({}) 
-	   .exec((err, itemsFound) => {
-	   			if (err){
-	   				console.log("err: "+ err);
-	   			}else{
-					if(!itemsFound){
-						console.log("No existen items elementocanvas");
-					}else{
-						variablesinternasCanvas=itemsFound;
-						detectaEventoVI3(variablesinternasCanvas);
-					}
-	   			}
-	   		}
-	   	);
 	variableinterna.save((err, itemStored) => {
 		if(err){
 			console.log("err: "+ err);
@@ -658,133 +778,261 @@ function guardaVI3(){
 		}
 	});
 }
-function detectaEventoVI1(elementosVI){
+function detectaEventoVI1(timestamp,elementosVI){
 	var name;
 	var min;
 	var max;
 	var limite;
 	var indicaalarma;
 	var datoentrada;
+	var datoanterior;
 	var datoentradaescalado;
 	var m;
     var c;
     var cantItems=elementosVI.length;
 	var endFor;
+	var ultimoVI=[];
+	var timestampanterior;
 	if(cantItems < 8){
       endFor=cantItems;
     }else{
       endFor=8;
     }
     if(cantItems > 0){
-    	for (var i = 0; i < endFor; i++) {
 
-			name = elementosVI[i].name;
-			min = elementosVI[i].min;
-			max = elementosVI[i].max;
-			limite = elementosVI[i].limite;
-			indicaalarma = elementosVI[i].indicaalarma;
-			datoentrada = arrayGuardaVI1[i];
-		    if(max > min){
-		       m = (max-min)/999;
-		       c = max-m*999;
-		       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-		    }
-		    if ( indicaalarma != 'no' ) {
-		    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-			    }else{
-			    	var vi_indice=i+1;
-			    	//console.log('alarma:'+datoentradaescalado);
-			        guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-			    }
-		    }
-		}
+    	//limite
+    	//Traer ultimo dato se Analoginput
+	    Variableinterna.findOne({}) 
+		   //.sort([['timestamp', -1]])
+		   .sort({ timestamp: -1 })
+		   .exec(
+		   		(err, itemsFound) => {
+		   			if (err){
+		   				console.log(err);
+		   			}else{
+		   	     		ultimoVI=[	itemsFound.vi1,
+									itemsFound.vi2,
+									itemsFound.vi3,
+									itemsFound.vi4,
+									itemsFound.vi5,
+									itemsFound.vi6,
+									itemsFound.vi7,
+									itemsFound.vi8,
+
+								 ];
+						timestampanterior=	itemsFound.timestamp;
+
+						for (var i = 0; i < endFor; i++) {
+							name = elementosVI[i].name;
+							min = elementosVI[i].min;
+							max = elementosVI[i].max;
+							limite = elementosVI[i].limite;
+							indicaalarma = elementosVI[i].indicaalarma;
+							datoentrada = arrayGuardaVI1[i];
+							datoanterior=ultimoVI[i];
+						    if(max > min){
+						       m = (max-min)/999;
+						       c = max-m*999;
+						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+						    }
+						    if ( indicaalarma != 'no' ) {
+						    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+							    }else{
+							    	//Calcula el tiempo que paso desde la ultima entrada
+							    	var tpo1 = timestampanterior.getTime();
+						            var tpo2 = timestamp.getTime();
+						            var diff=(tpo2-tpo1)/1000;
+							    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+							    		var vi_indice=i+1;
+							        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+							        }
+							        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+							        if(datoentrada==datoanterior){
+						        		if(diff > 3600){
+						        			var vi_indice=i+1;
+							                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+						        		}
+							        }
+							    	
+							    }
+						    }
+						}
+						saveVI1(timestamp);
+		   			}
+		   		});
     }
-	
 }
-function detectaEventoVI2(elementosVI){
+
+function detectaEventoVI2(timestamp,elementosVI){
 	var name;
 	var min;
 	var max;
 	var limite;
 	var indicaalarma;
 	var datoentrada;
+	var datoanterior;
 	var datoentradaescalado;
 	var m;
     var c;
     var cantItems=elementosVI.length;
-    var endFor;
-    if(cantItems > 8 && cantItems < 16){
+	var endFor;
+	var ultimoVI=[];
+	var timestampanterior;
+	if(cantItems > 8 && cantItems < 16){
       endFor=cantItems;
     }
     if(cantItems >=16 ){
       endFor=16;
     }
     if(cantItems > 8){
-    	for (var i = 8; i < endFor; i++) {
-			name = elementosVI[i].name;
-			min = elementosVI[i].min;
-			max = elementosVI[i].max;
-			limite = elementosVI[i].limite;
-			indicaalarma = elementosVI[i].indicaalarma;
-			datoentrada = arrayGuardaVI2[i-8];
-		    if(max > min){
-		       m = (max-min)/999;
-		       c = max-m*999;
-		       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-		    }
-		    if ( indicaalarma != 'no' ) {
-		    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-			    }else{
-			    	var vi_indice=i+1;
-			        guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-			    }
-		    }
-		}
+
+    	//limite
+    	//Traer ultimo dato se Analoginput
+	    Variableinterna.findOne({}) 
+		   //.sort([['timestamp', -1]])
+		   .sort({ timestamp: -1 })
+		   .exec(
+		   		(err, itemsFound) => {
+		   			if (err){
+		   				console.log(err);
+		   			}else{
+		   	     		ultimoVI=[	itemsFound.vi9,
+									itemsFound.vi10,
+									itemsFound.vi11,
+									itemsFound.vi12,
+									itemsFound.vi13,
+									itemsFound.vi14,
+									itemsFound.vi15,
+									itemsFound.vi16,
+
+								 ];
+						timestampanterior=	itemsFound.timestamp;
+
+						for (var i = 8; i < endFor; i++) {
+							name = elementosVI[i].name;
+							min = elementosVI[i].min;
+							max = elementosVI[i].max;
+							limite = elementosVI[i].limite;
+							indicaalarma = elementosVI[i].indicaalarma;
+							datoentrada = arrayGuardaVI2[i-8];
+							datoanterior=ultimoVI[i-8];
+						    if(max > min){
+						       m = (max-min)/999;
+						       c = max-m*999;
+						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+						    }
+						    if ( indicaalarma != 'no' ) {
+						    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+							    }else{
+							    	//Calcula el tiempo que paso desde la ultima entrada
+							    	var tpo1 = timestampanterior.getTime();
+						            var tpo2 = timestamp.getTime();
+						            var diff=(tpo2-tpo1)/1000;
+							    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+							    		var vi_indice=i+1;
+							        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+							        }
+							        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+							        if(datoentrada==datoanterior){
+						        		if(diff > 3600){
+						        			var vi_indice=i+1;
+							                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+						        		}
+							        }
+							    	
+							    }
+						    }
+						}
+						saveVI2(timestamp);
+		   			}
+		   		});
     }
-	
 }
 
-function detectaEventoVI3(elementosVI){
+function detectaEventoVI3(timestamp,elementosVI){
 	var name;
 	var min;
 	var max;
 	var limite;
 	var indicaalarma;
 	var datoentrada;
+	var datoanterior;
 	var datoentradaescalado;
 	var m;
     var c;
     var cantItems=elementosVI.length;
-    var endFor;
-    if(cantItems > 16 && cantItems < 24){
+	var endFor;
+	var ultimoVI=[];
+	var timestampanterior;
+	if(cantItems > 16 && cantItems < 24){
       endFor=cantItems;
     }
     if(cantItems >=24 ){
       endFor=24;
     }
     if(cantItems > 16){
-    	for (var i = 16; i < endFor; i++) {
-			name = elementosVI[i].name;
-			min = elementosVI[i].min;
-			max = elementosVI[i].max;
-			limite = elementosVI[i].limite;
-			indicaalarma = elementosVI[i].indicaalarma;
-			datoentrada = arrayGuardaVI3[i-16];
-		    if(max > min){
-		       m = (max-min)/999;
-		       c = max-m*999;
-		       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-		    }
-		    if ( indicaalarma != 'no' ) {
-		    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-			    }else{
-			    	var vi_indice=i+1;
-			        guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-			    }
-		    }
-		}
+
+    	//limite
+    	//Traer ultimo dato se Analoginput
+	    Variableinterna.findOne({}) 
+		   //.sort([['timestamp', -1]])
+		   .sort({ timestamp: -1 })
+		   .exec(
+		   		(err, itemsFound) => {
+		   			if (err){
+		   				console.log(err);
+		   			}else{
+		   	     		ultimoVI=[	itemsFound.vi17,
+									itemsFound.vi18,
+									itemsFound.vi19,
+									itemsFound.vi20,
+									itemsFound.vi21,
+									itemsFound.vi22,
+									itemsFound.vi23,
+									itemsFound.vi24,
+
+								 ];
+						timestampanterior=	itemsFound.timestamp;
+
+						for (var i = 16; i < endFor; i++) {
+							name = elementosVI[i].name;
+							min = elementosVI[i].min;
+							max = elementosVI[i].max;
+							limite = elementosVI[i].limite;
+							indicaalarma = elementosVI[i].indicaalarma;
+							datoentrada = arrayGuardaVI2[i-16];
+							datoanterior=ultimoVI[i-16];
+						    if(max > min){
+						       m = (max-min)/999;
+						       c = max-m*999;
+						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+						    }
+						    if ( indicaalarma != 'no' ) {
+						    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+							    }else{
+							    	//Calcula el tiempo que paso desde la ultima entrada
+							    	var tpo1 = timestampanterior.getTime();
+						            var tpo2 = timestamp.getTime();
+						            var diff=(tpo2-tpo1)/1000;
+							    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+							    		var vi_indice=i+1;
+							        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+							        }
+							        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+							        if(datoentrada==datoanterior){
+						        		if(diff > 3600){
+						        			var vi_indice=i+1;
+							                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+						        		}
+							        }
+							    	
+							    }
+						    }
+						}
+						saveVI3(timestamp);
+		   			}
+		   		});
     }
-	
 }
 
 function buscaTagPersona(tag,dir){
