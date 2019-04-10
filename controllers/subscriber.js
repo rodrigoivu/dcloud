@@ -189,7 +189,6 @@ function guardaDI(){
 	// var estadoActualDI=arrayGuardaDI;
 	// var i;
 	var elementosCanvasdi=[];
-
 	Elementocanvasdi.find({}) 
 	   .exec((err, itemsFound) => {
 	   			if (err){
@@ -249,6 +248,7 @@ function detectaEventoDI(timestamp, elementosDI){
     var datoanterior;
     var timestampanterior;
     //Traer ultimo dato se Analoginput
+ 
     Digitalinput.findOne({}) 
 	   //.sort([['timestamp', -1]])
 	   .sort({ timestamp: -1 })
@@ -257,37 +257,39 @@ function detectaEventoDI(timestamp, elementosDI){
 	   			if (err){
 	   				console.log(err);
 	   			}else{
-	   	     		ultimoDI=[	itemsFound.di1,
-								itemsFound.di2,
-								itemsFound.di3,
-								itemsFound.di4,
-								itemsFound.di5,
-								itemsFound.di6,
-								itemsFound.di7,
-								itemsFound.di8 ];
-					timestampanterior=	itemsFound.timestamp;		
-	   				//Si hay un ultimo dato comparar si es igual
-					for (var i = 0; i < elementosDI.length; i++) {
-						
-						condicion=elementosDI[i].condicion;
-						datoentrada=arrayGuardaDI[i];
-						datoanterior=ultimoDI[i];
-						var nombre = elementosDI[i].name;
-						//Si es normal abierta y se activa o si es normal cerrada y se abre
-						if((condicion=='NO' && datoentrada == 1) || (condicion=='NC' && datoentrada == 0)){
-							var tpo1 = timestampanterior.getTime();
-				            var tpo2 = timestamp.getTime();
-				            var diff=(tpo2-tpo1)/1000;
-							if(datoentrada!=datoanterior){
-								var di_indice=i+1;
-					            guardaEventoentrada('DI '+di_indice,nombre,'Activado',datoentrada);
+	   				if(itemsFound){
+		   	     		ultimoDI=[	itemsFound.di1,
+									itemsFound.di2,
+									itemsFound.di3,
+									itemsFound.di4,
+									itemsFound.di5,
+									itemsFound.di6,
+									itemsFound.di7,
+									itemsFound.di8 ];
+						timestampanterior=	itemsFound.timestamp;		
+		   				//Si hay un ultimo dato comparar si es igual
+						for (var i = 0; i < elementosDI.length; i++) {
+							
+							condicion=elementosDI[i].condicion;
+							datoentrada=arrayGuardaDI[i];
+							datoanterior=ultimoDI[i];
+							var nombre = elementosDI[i].name;
+							//Si es normal abierta y se activa o si es normal cerrada y se abre
+							if((condicion=='NO' && datoentrada == 1) || (condicion=='NC' && datoentrada == 0)){
+								var tpo1 = timestampanterior.getTime();
+					            var tpo2 = timestamp.getTime();
+					            var diff=(tpo2-tpo1)/1000;
+								if(datoentrada!=datoanterior){
+									var di_indice=i+1;
+						            guardaEventoentrada('DI '+di_indice,nombre,'Activado',datoentrada);
+								}
+								if(datoentrada==datoanterior){
+					        		if(diff > 3600){
+					        		var di_indice=i+1;
+						            guardaEventoentrada('DI '+di_indice,nombre,'Activado',datoentrada);
+					        		}
+					        	}		
 							}
-							if(datoentrada==datoanterior){
-				        		if(diff > 3600){
-				        		var di_indice=i+1;
-					            guardaEventoentrada('DI '+di_indice,nombre,'Activado',datoentrada);
-				        		}
-				        	}		
 						}
 					}
 					saveDI(timestamp);
@@ -388,50 +390,52 @@ function detectaEventoAI(timestamp, elementosAI){
 	   			if (err){
 	   				console.log(err);
 	   			}else{
-	   	     		ultimoAI=[	itemsFound.ai1,
-								itemsFound.ai2,
-								itemsFound.ai3,
-								itemsFound.ai4,
-								itemsFound.ai5,
-								itemsFound.ai6,
-								itemsFound.ai7,
-								itemsFound.ai8 ];
-					timestampanterior=	itemsFound.timestamp;		
-	   				//Si hay un ultimo dato comparar si es igual
-					for (var i = 0; i < elementosAI.length; i++) {
-						min=elementosAI[i].min;
-						max=elementosAI[i].max;
-						limite=elementosAI[i].limite;
-						indicaalarma=elementosAI[i].indicaalarma;
-						datoentrada=arrayGuardaAI[i];
-						datoanterior=ultimoAI[i];
-						//Calculo datoentradaescalado
-					    if(max > min){
-					       m=(max-min)/999;
-					       c=max-m*999;
-					       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-					    }
-					    
-					    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-				        	// console.log('esta normal');
-					    }else{
-					    	//Calcula el tiempo que paso desde la ultima entrada
-					    	var tpo1 = timestampanterior.getTime();
-				            var tpo2 = timestamp.getTime();
-				            var diff=(tpo2-tpo1)/1000;
-				            
-					    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
-					    		var ai_indice=i+1;
-					            guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
-					        }
-					        //si son iguales y hay una diferencia de tiempo razonable guarda evento
-					        if(datoentrada==datoanterior){
-				        		if(diff > 3600){
-				        			var ai_indice=i+1;
+	   				if(itemsFound){
+		   	     		ultimoAI=[	itemsFound.ai1,
+									itemsFound.ai2,
+									itemsFound.ai3,
+									itemsFound.ai4,
+									itemsFound.ai5,
+									itemsFound.ai6,
+									itemsFound.ai7,
+									itemsFound.ai8 ];
+						timestampanterior=	itemsFound.timestamp;		
+		   				//Si hay un ultimo dato comparar si es igual
+						for (var i = 0; i < elementosAI.length; i++) {
+							min=elementosAI[i].min;
+							max=elementosAI[i].max;
+							limite=elementosAI[i].limite;
+							indicaalarma=elementosAI[i].indicaalarma;
+							datoentrada=arrayGuardaAI[i];
+							datoanterior=ultimoAI[i];
+							//Calculo datoentradaescalado
+						    if(max > min){
+						       m=(max-min)/999;
+						       c=max-m*999;
+						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
+						    }
+						    
+						    if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+					        	// console.log('esta normal');
+						    }else{
+						    	//Calcula el tiempo que paso desde la ultima entrada
+						    	var tpo1 = timestampanterior.getTime();
+					            var tpo2 = timestamp.getTime();
+					            var diff=(tpo2-tpo1)/1000;
+					            
+						    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+						    		var ai_indice=i+1;
 						            guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
-				        		}
-					        }
-					    }
+						        }
+						        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+						        if(datoentrada==datoanterior){
+					        		if(diff > 3600){
+					        			var ai_indice=i+1;
+							            guardaEventoentrada('AI '+ai_indice,'entrada '+ai_indice,'Superó límite',datoentradaescalado);
+					        		}
+						        }
+						    }
+						}
 					}
 					saveAI(timestamp);
 	   			}
@@ -810,52 +814,54 @@ function detectaEventoVI1(timestamp,elementosVI){
 		   			if (err){
 		   				console.log(err);
 		   			}else{
-		   	     		ultimoVI=[	itemsFound.vi1,
-									itemsFound.vi2,
-									itemsFound.vi3,
-									itemsFound.vi4,
-									itemsFound.vi5,
-									itemsFound.vi6,
-									itemsFound.vi7,
-									itemsFound.vi8,
+		   				if(itemsFound){
+			   	     		ultimoVI=[	itemsFound.vi1,
+										itemsFound.vi2,
+										itemsFound.vi3,
+										itemsFound.vi4,
+										itemsFound.vi5,
+										itemsFound.vi6,
+										itemsFound.vi7,
+										itemsFound.vi8,
 
-								 ];
-						timestampanterior=	itemsFound.timestamp;
+									 ];
+							timestampanterior=	itemsFound.timestamp;
 
-						for (var i = 0; i < endFor; i++) {
-							name = elementosVI[i].name;
-							min = elementosVI[i].min;
-							max = elementosVI[i].max;
-							limite = elementosVI[i].limite;
-							indicaalarma = elementosVI[i].indicaalarma;
-							datoentrada = arrayGuardaVI1[i];
-							datoanterior=ultimoVI[i];
-						    if(max > min){
-						       m = (max-min)/999;
-						       c = max-m*999;
-						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-						    }
-						    if ( indicaalarma != 'no' ) {
-						    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-							    }else{
-							    	//Calcula el tiempo que paso desde la ultima entrada
-							    	var tpo1 = timestampanterior.getTime();
-						            var tpo2 = timestamp.getTime();
-						            var diff=(tpo2-tpo1)/1000;
-							    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
-							    		var vi_indice=i+1;
-							        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-							        }
-							        //si son iguales y hay una diferencia de tiempo razonable guarda evento
-							        if(datoentrada==datoanterior){
-						        		if(diff > 3600){
-						        			var vi_indice=i+1;
-							                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-						        		}
-							        }
-							    	
+							for (var i = 0; i < endFor; i++) {
+								name = elementosVI[i].name;
+								min = elementosVI[i].min;
+								max = elementosVI[i].max;
+								limite = elementosVI[i].limite;
+								indicaalarma = elementosVI[i].indicaalarma;
+								datoentrada = arrayGuardaVI1[i];
+								datoanterior=ultimoVI[i];
+							    if(max > min){
+							       m = (max-min)/999;
+							       c = max-m*999;
+							       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
 							    }
-						    }
+							    if ( indicaalarma != 'no' ) {
+							    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+								    }else{
+								    	//Calcula el tiempo que paso desde la ultima entrada
+								    	var tpo1 = timestampanterior.getTime();
+							            var tpo2 = timestamp.getTime();
+							            var diff=(tpo2-tpo1)/1000;
+								    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+								    		var vi_indice=i+1;
+								        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+								        }
+								        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+								        if(datoentrada==datoanterior){
+							        		if(diff > 3600){
+							        			var vi_indice=i+1;
+								                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+							        		}
+								        }
+								    	
+								    }
+							    }
+							}
 						}
 						saveVI1(timestamp);
 		   			}
@@ -896,52 +902,54 @@ function detectaEventoVI2(timestamp,elementosVI){
 		   			if (err){
 		   				console.log(err);
 		   			}else{
-		   	     		ultimoVI=[	itemsFound.vi9,
-									itemsFound.vi10,
-									itemsFound.vi11,
-									itemsFound.vi12,
-									itemsFound.vi13,
-									itemsFound.vi14,
-									itemsFound.vi15,
-									itemsFound.vi16,
+		   				if(itemsFound){
+			   	     		ultimoVI=[	itemsFound.vi9,
+										itemsFound.vi10,
+										itemsFound.vi11,
+										itemsFound.vi12,
+										itemsFound.vi13,
+										itemsFound.vi14,
+										itemsFound.vi15,
+										itemsFound.vi16,
 
-								 ];
-						timestampanterior=	itemsFound.timestamp;
+									 ];
+							timestampanterior=	itemsFound.timestamp;
 
-						for (var i = 8; i < endFor; i++) {
-							name = elementosVI[i].name;
-							min = elementosVI[i].min;
-							max = elementosVI[i].max;
-							limite = elementosVI[i].limite;
-							indicaalarma = elementosVI[i].indicaalarma;
-							datoentrada = arrayGuardaVI2[i-8];
-							datoanterior=ultimoVI[i-8];
-						    if(max > min){
-						       m = (max-min)/999;
-						       c = max-m*999;
-						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-						    }
-						    if ( indicaalarma != 'no' ) {
-						    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-							    }else{
-							    	//Calcula el tiempo que paso desde la ultima entrada
-							    	var tpo1 = timestampanterior.getTime();
-						            var tpo2 = timestamp.getTime();
-						            var diff=(tpo2-tpo1)/1000;
-							    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
-							    		var vi_indice=i+1;
-							        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-							        }
-							        //si son iguales y hay una diferencia de tiempo razonable guarda evento
-							        if(datoentrada==datoanterior){
-						        		if(diff > 3600){
-						        			var vi_indice=i+1;
-							                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-						        		}
-							        }
-							    	
+							for (var i = 8; i < endFor; i++) {
+								name = elementosVI[i].name;
+								min = elementosVI[i].min;
+								max = elementosVI[i].max;
+								limite = elementosVI[i].limite;
+								indicaalarma = elementosVI[i].indicaalarma;
+								datoentrada = arrayGuardaVI2[i-8];
+								datoanterior=ultimoVI[i-8];
+							    if(max > min){
+							       m = (max-min)/999;
+							       c = max-m*999;
+							       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
 							    }
-						    }
+							    if ( indicaalarma != 'no' ) {
+							    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+								    }else{
+								    	//Calcula el tiempo que paso desde la ultima entrada
+								    	var tpo1 = timestampanterior.getTime();
+							            var tpo2 = timestamp.getTime();
+							            var diff=(tpo2-tpo1)/1000;
+								    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+								    		var vi_indice=i+1;
+								        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+								        }
+								        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+								        if(datoentrada==datoanterior){
+							        		if(diff > 3600){
+							        			var vi_indice=i+1;
+								                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+							        		}
+								        }
+								    	
+								    }
+							    }
+							}
 						}
 						saveVI2(timestamp);
 		   			}
@@ -982,52 +990,54 @@ function detectaEventoVI3(timestamp,elementosVI){
 		   			if (err){
 		   				console.log(err);
 		   			}else{
-		   	     		ultimoVI=[	itemsFound.vi17,
-									itemsFound.vi18,
-									itemsFound.vi19,
-									itemsFound.vi20,
-									itemsFound.vi21,
-									itemsFound.vi22,
-									itemsFound.vi23,
-									itemsFound.vi24,
+		   				if(itemsFound){
+			   	     		ultimoVI=[	itemsFound.vi17,
+										itemsFound.vi18,
+										itemsFound.vi19,
+										itemsFound.vi20,
+										itemsFound.vi21,
+										itemsFound.vi22,
+										itemsFound.vi23,
+										itemsFound.vi24,
 
-								 ];
-						timestampanterior=	itemsFound.timestamp;
+									 ];
+							timestampanterior=	itemsFound.timestamp;
 
-						for (var i = 16; i < endFor; i++) {
-							name = elementosVI[i].name;
-							min = elementosVI[i].min;
-							max = elementosVI[i].max;
-							limite = elementosVI[i].limite;
-							indicaalarma = elementosVI[i].indicaalarma;
-							datoentrada = arrayGuardaVI2[i-16];
-							datoanterior=ultimoVI[i-16];
-						    if(max > min){
-						       m = (max-min)/999;
-						       c = max-m*999;
-						       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
-						    }
-						    if ( indicaalarma != 'no' ) {
-						    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
-							    }else{
-							    	//Calcula el tiempo que paso desde la ultima entrada
-							    	var tpo1 = timestampanterior.getTime();
-						            var tpo2 = timestamp.getTime();
-						            var diff=(tpo2-tpo1)/1000;
-							    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
-							    		var vi_indice=i+1;
-							        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-							        }
-							        //si son iguales y hay una diferencia de tiempo razonable guarda evento
-							        if(datoentrada==datoanterior){
-						        		if(diff > 3600){
-						        			var vi_indice=i+1;
-							                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
-						        		}
-							        }
-							    	
+							for (var i = 16; i < endFor; i++) {
+								name = elementosVI[i].name;
+								min = elementosVI[i].min;
+								max = elementosVI[i].max;
+								limite = elementosVI[i].limite;
+								indicaalarma = elementosVI[i].indicaalarma;
+								datoentrada = arrayGuardaVI2[i-16];
+								datoanterior=ultimoVI[i-16];
+							    if(max > min){
+							       m = (max-min)/999;
+							       c = max-m*999;
+							       datoentradaescalado = parseFloat(Number(m*datoentrada+c).toFixed(2));
 							    }
-						    }
+							    if ( indicaalarma != 'no' ) {
+							    	if( (datoentradaescalado <= limite) && (indicaalarma=='sobre') || (datoentradaescalado > limite) && (indicaalarma=='bajo')){
+								    }else{
+								    	//Calcula el tiempo que paso desde la ultima entrada
+								    	var tpo1 = timestampanterior.getTime();
+							            var tpo2 = timestamp.getTime();
+							            var diff=(tpo2-tpo1)/1000;
+								    	if(datoentrada!=datoanterior){ //esta fuera de limite pero es distinto que el anterior
+								    		var vi_indice=i+1;
+								        	guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+								        }
+								        //si son iguales y hay una diferencia de tiempo razonable guarda evento
+								        if(datoentrada==datoanterior){
+							        		if(diff > 3600){
+							        			var vi_indice=i+1;
+								                guardaEventoentrada('VI '+vi_indice,name,'Superó límite',datoentradaescalado);
+							        		}
+								        }
+								    	
+								    }
+							    }
+							}
 						}
 						saveVI3(timestamp);
 		   			}
