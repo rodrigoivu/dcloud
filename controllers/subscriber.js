@@ -49,7 +49,7 @@ function filtraMensaje(topic, message){
 	      manejoTopicoItem2(messagestr, topic);
 	      break;
 	    default:
-	      console.log('No hay ningún procesamiento para el tópico %s', topic); 
+	      console.log('No hay ningún procesamiento para tópico %s', topic); 
 	}
 }
 
