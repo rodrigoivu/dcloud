@@ -29,7 +29,7 @@ function pushNotificar(req,res){
 
 function pushNotificarEvento(title,body){
 	var pathNoImage = 'https://d-cloud.desimat.cl/api/get-image-user/5c1bae957fb66a05816d0b35-408.jpg';
-	console.log(pathNoImage);
+	//console.log(pathNoImage);
 	const notificationPayload = {
 	    notification: {
 	      title: title,
@@ -41,7 +41,9 @@ function pushNotificarEvento(title,body){
   	fakeDatabase.forEach(subscription => {
    	 promises.push(webpush.sendNotification(subscription, JSON.stringify(notificationPayload)));
   	});
-  	Promise.all(promises).then(() => console.log('OK'));
+  	Promise.all(promises).then(() => 
+  		console.log('Send Push')
+  		);
 }
 
 module.exports = {

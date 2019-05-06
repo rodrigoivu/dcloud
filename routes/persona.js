@@ -17,5 +17,5 @@ var md_upload_pdf = multipart({ uploadDir: './uploads/pdfPersona'});
  api.get('/get-image-persona/:imageFile',PersonaController.getImageFile);
  api.get('/get-pdf-persona/:file',PersonaController.getFilePdf);
  api.put('/upload-image-persona/:id',[md_auth.ensureAuth,md_auth.ensureAdmin, md_upload],PersonaController.uploadImage);
- api.put('/upload-pdf-paciente/:id/:opcion/:responsable',[md_auth.ensureAuth,md_auth.ensureAdmin, md_upload_pdf],PersonaController.uploadFilePdf);
+ api.put('/upload-pdf-persona/:id/:opcion/:responsable',[md_auth.ensureAuth,md_auth.ensureAdmin, md_upload_pdf],PersonaController.uploadFilePdf);
 module.exports = api;

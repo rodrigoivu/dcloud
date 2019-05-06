@@ -11,7 +11,7 @@ var ElementocanvasdiSchema = new Schema({
 	valor: { type: Number, required: false},
 	posx: { type: Number, required: false},
 	posy: { type: Number, required: false},
-	condicion: { type: String, required: false}, // normal abierto normal cerrado
+	condicion: { type: String, required: false}, // normal abierto normal cerrado  NO NC
 	colornormal: { type: String, required: false},
 	coloralarma: { type: String, required: false},
 	colortitulo: { type: String, required: false}

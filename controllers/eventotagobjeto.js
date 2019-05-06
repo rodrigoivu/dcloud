@@ -73,6 +73,7 @@ function itemsRangoFechas(req,res){
 	// console.log(new Date(desde));
 	// console.log(new Date(hasta));
 	//OJO CAMBIAR NOMBRE DE COLLECCION Y CAMPOS SEGÚN LA CONSULTA
+
 	Eventotagobjeto.find({timestamp : {
 					    '$gte': (new Date(desde)).getTime(),
 					    '$lte': (new Date(hasta)).getTime()
@@ -89,7 +90,7 @@ function itemsRangoFechas(req,res){
 	   				if(!itemsFound){
 						res.status(404).send({message: 'Imposible mostrar información'});
 					}else{
-						res.status(200).send({
+                        res.status(200).send({
 							items: itemsFound
 						});
 		   			}

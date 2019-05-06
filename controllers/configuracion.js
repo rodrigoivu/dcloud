@@ -139,6 +139,42 @@ function uploadImageLogo(req,res){
 					res.status(500).send({message: 'Error al mover archivo'});
 				}else{
 					//Actualizar nombre en base de datos
+					Configuracion.findByIdAndUpdate(configId, {image: nombreArchivo}, (err, itemUpdated) => {
+						if(!itemUpdated){
+							res.status(404).send({message: 'No se ha podido actualizar el usuario'});
+					    }else{
+        				    res.status(200).send({ item: itemUpdated, archivo: nombreArchivo });
+					    }
+					});
+				}
+			});
+		}else{
+			res.status(400).send({message: 'Extención del archivo no válida'});
+		}
+		
+	}else{
+		res.status(400).send({message: 'No has subido ninguna imagen...'});
+	}
+}
+//================================================
+// CARGAR IMAGEN LOGO
+//================================================
+function uploadImageLogo(req,res){
+	var configId =req.params.id;
+	if(req.files){
+		var file_path = req.files.image.path;
+		var file_ext = path.extname(file_path);
+		var extensionesValidas = ['.png'];
+		if( extensionesValidas.indexOf(file_ext) >= 0 ){
+			//personalizar Nombre
+			var nombreArchivo = `imgLogo.png`;
+			var path_destino = `./uploads/planta/${nombreArchivo}`;
+			//Mover archivo
+			fs.rename( file_path,path_destino, function(err){
+				if (err){
+					res.status(500).send({message: 'Error al mover archivo'});
+				}else{
+					//Actualizar nombre en base de datos
 					Configuracion.findByIdAndUpdate(configId, {imagelogo: nombreArchivo}, (err, itemUpdated) => {
 						if(!itemUpdated){
 							res.status(404).send({message: 'No se ha podido actualizar imagen logo'});
@@ -207,6 +243,7 @@ function getImageFile(req,res){
 		res.sendFile(pathNoImage);
 	}
 }
+
 module.exports = {
 	registraItem,
 	actualizaItem,

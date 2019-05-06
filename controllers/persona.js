@@ -200,7 +200,7 @@ function uploadFilePdf(req,res){
 					res.status(500).send({message: 'Error al mover archivo'});
 				}else{
 					switch (opcion) {
-					    case "archivoexamen1":
+					    case "archivoexamen1": //examen ocupacional
 					        Persona.findByIdAndUpdate(itemId, {archivoexamen1: nombreArchivo, responsablearchivoexamen1: responsable}, (err, itemUpdated) => {
 	 							if(itemUpdated){
 							    	var pathViejo = './uploads/pdfPersona/' + itemUpdated.archivoexamen1;
@@ -208,7 +208,7 @@ function uploadFilePdf(req,res){
 	            				    res.status(200).send({ item: itemUpdated, archivo: nombreArchivo });
 							}});
 					        break;
-					    case "archivoexamen2":
+					    case "archivoexamen2": //examen altura fisica
 					        Persona.findByIdAndUpdate(itemId, {archivoexamen2: nombreArchivo, responsablearchivoexamen2: responsable}, (err, itemUpdated) => {
 	 							if(itemUpdated){
 							    	var pathViejo = './uploads/pdfPersona/' + itemUpdated.archivoexamen2;
@@ -216,7 +216,7 @@ function uploadFilePdf(req,res){
 	            				    res.status(200).send({ item: itemUpdated, archivo: nombreArchivo });
 							}});
 					        break;
-					    case "archivoexamen3":
+					    case "archivoexamen3": //examen altura geografica
 					        Persona.findByIdAndUpdate(itemId, {archivoexamen3: nombreArchivo, responsablearchivoexamen3: responsable}, (err, itemUpdated) => {
 	 							if(itemUpdated){
 							    	var pathViejo = './uploads/pdfPersona/' + itemUpdated.archivoexamen3;

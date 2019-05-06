@@ -79,7 +79,7 @@ function itemsRangoFechas(req,res){
 						}
 					})
 	   //.sort([['timestamp', 1]])
-	   .populate('persona', 'nombre cargo empresa imagen')
+	   .populate('persona', 'nombre empresa cargo imagen')
 	   .sort({ _id: 'asc' })
 	   .exec(
 	   		(err, itemsFound) => {

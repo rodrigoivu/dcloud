@@ -16,8 +16,8 @@ var ObjetoSchema = new Schema({
 	disciplina: { type: String, required: false },
 	categoria: { type: String, required: false },
 	grupo: { type: String, required: false },
-	stockmin: { type: String, required: false },
-	stock: { type: String, required: false },
+	stockmin: { type: String, required: false, default: '0' },
+	stock: { type: String, required: false, default: '0'},
 	imagen: { type: String, required: false }
 	
 });

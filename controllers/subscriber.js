@@ -41,6 +41,7 @@ var topicoLocal='';
 //================================================
 function filtraMensaje(topic, message){
 	var messagestr = message.toString();
+	console.log(messagestr);
 	switch (topic) {
 	    case 'desimat/estado':
 	      manejoTopicoItem1(messagestr, topic);
@@ -49,7 +50,7 @@ function filtraMensaje(topic, message){
 	      manejoTopicoItem2(messagestr, topic);
 	      break;
 	    default:
-	      console.log('No hay ningún procesamiento para tópico %s', topic); 
+	      console.log('No hay ningún procesamiento para el tópico %s', topic); 
 	}
 }
 
@@ -60,6 +61,7 @@ function manejoTopicoItem1( message, topico ){
     var mensaje;
     //console.log(message);
 	mensaje = JSON.parse(message);
+	console.log(mensaje);
     if (mensaje.TAG){
     	var tag = mensaje.tag;
     	var dir =mensaje.d; //d de direccion
